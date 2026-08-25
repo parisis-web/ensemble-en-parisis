@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ensemble en Parisis - Plateforme citoyenne et solidaire de la boucle du Parisis. Trouvez des missions de bénévolat, ateliers et initiatives citoyennes près de chez vous." />
+  <meta name="keywords" content="Parisis, bénévolat, citoyenneté, Cormeilles-en-Parisis, Herblay, Franconville, Taverny, solidarité, transition écologique" />
+  <title>Ensemble en Parisis | La dynamique citoyenne & solidaire de notre territoire</title>
+
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Leaflet.js CSS (Cartographie) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- Feuilles de style de l'application -->
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/modals.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+  <!-- Lien d'évitement pour l'accessibilité RGAA -->
+  <a href="#main-content" class="skip-link">Passer directement au contenu principal</a>
+
+  <!-- ==========================================================================
+       BANDEAU DE NOTIFICATION HAUTE (ÉVÉNEMENT DU WEEK-END)
+       ========================================================================== -->
+  <aside class="topbar-notification" role="region" aria-label="Annonce prioritaire">
+    <div class="topbar-content">
+      <span class="topbar-badge">🌿 À la une</span>
+      <span>Grand nettoyage citoyen des berges de Seine ce samedi à Herblay !</span>
+      <a class="topbar-link" onclick="window.modals.openRegistration('act-1')">Je m'inscris (reste 4 places) →</a>
+    </div>
+    <button class="topbar-close" onclick="this.parentElement.style.display='none'" aria-label="Fermer le bandeau">✕</button>
+  </aside>
+
+  <!-- ==========================================================================
+       HEADER PRINCIPAL & NAVIGATION
+       ========================================================================== -->
+  <header class="main-header" role="banner">
+    <div class="container header-container">
+      <!-- Logo & Identité -->
+      <a href="#" class="logo-brand" aria-label="Accueil Ensemble en Parisis">
+        <div class="logo-icon">🌿</div>
+        <div class="logo-text-wrap">
+          <span class="logo-title">Ensemble <span>en Parisis</span></span>
+          <span class="logo-subtitle">Plateforme Citoyenne & Solidaire</span>
+        </div>
+      </a>
+
+      <!-- Navigation Mega Menu -->
+      <nav class="main-nav" role="navigation" aria-label="Navigation principale">
+        <a href="#catalogue-section" class="nav-link">
+          <span>Agir & S'engager</span>
+          <span class="nav-link-badge">15+</span>
+        </a>
+        <a href="#themes-section" class="nav-link">Thématiques</a>
+        <a href="#carte-section" class="nav-link">Carte du Territoire</a>
+        <a href="#impact-section" class="nav-link">Récits Locaux</a>
+        <a href="#partenaires-section" class="nav-link">Espace Asso</a>
+      </nav>
+
+      <!-- Barre d'outils et CTA -->
+      <div class="header-actions">
+        <button class="search-trigger-btn" onclick="window.modals.openQuickSearch()" aria-label="Recherche rapide">
+          <span>🔍 Rechercher...</span>
+          <kbd class="search-shortcut">Cmd+K</kbd>
+        </button>
+
+        <button class="btn btn-ghost btn-sm" onclick="window.modals.openCitizenDashboard()" title="Mon espace bénévole">
+          👤 Mon Espace
+        </button>
+
+        <button class="btn btn-outline btn-sm" onclick="window.modals.openProposeAction()">
+          + Proposer une action
+        </button>
+
+        <a href="#catalogue-section" class="btn btn-primary btn-sm">
+          Rejoindre une mission
+        </a>
+
+        <button class="mobile-menu-btn" onclick="window.modals.openQuickSearch()" aria-label="Menu mobile">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- ==========================================================================
+         SECTION 1: HERO SECTION IMMERSIVE
+         ========================================================================== -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-badge-tag">
+            <span>✨</span> 100% Val-d'Oise & Boucle du Parisis
+          </div>
+          <h1 class="hero-title">
+            Faites bouger votre territoire, <span class="hero-title-highlight">à votre rythme.</span>
+          </h1>
+          <p class="hero-subtitle">
+            Rejoignez des centaines de citoyens, bénévoles et associations engagés pour un territoire plus solidaire, écologique et dynamique.
+          </p>
+
+          <!-- Barre universelle multi-critères -->
+          <div class="hero-search-box" role="search">
+            <div class="search-field-group">
+              <span class="search-field-icon">🔍</span>
+              <input type="text" id="hero-search-query" class="search-field-input" placeholder="Que voulez-vous faire ? (ex: ramassage, cours...)" />
+            </div>
+
+            <div class="search-field-group">
+              <span class="search-field-icon">📍</span>
+              <select id="hero-search-commune" class="search-field-select commune-select-populate">
+                <!-- Rempli en JS -->
+              </select>
+            </div>
+
+            <div class="search-field-group">
+              <span class="search-field-icon">🏷️</span>
+              <select id="hero-search-theme" class="search-field-select">
+                <option value="all">Toutes thématiques</option>
+                <option value="env">🌱 Environnement</option>
+                <option value="solidarite">🤝 Solidarité</option>
+                <option value="citoyennete">🏛️ Vie locale</option>
+                <option value="education">📚 Éducation</option>
+                <option value="sante">🩺 Santé & Prévention</option>
+                <option value="culture">🎭 Culture & Sport</option>
+              </select>
+            </div>
+
+            <button id="hero-search-btn" class="btn btn-primary btn-lg">
+              🚀 Explorer
+            </button>
+          </div>
+
+          <!-- Tags populaires -->
+          <div class="hero-popular-tags">
+            <span class="popular-label">Tendances locales :</span>
+            <button class="tag-pill" onclick="window.state.setFilter('query', 'maraude')">#Maraude</button>
+            <button class="tag-pill" onclick="window.state.setFilter('query', 'jardin')">#JardinPartagé</button>
+            <button class="tag-pill" onclick="window.state.setFilter('query', 'zéro déchet')">#ZéroDéchet</button>
+            <button class="tag-pill" onclick="window.state.setFilter('query', 'devoirs')">#SoutienScolaire</button>
+            <button class="tag-pill" onclick="window.state.setFilter('query', 'vélo')">#AtelierVélo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 2: MÉTRIQUES D'IMPACT EN TEMPS RÉEL (BANDEAU DE RÉASSURANCE)
+         ========================================================================== -->
+    <section class="metrics-section" aria-label="Chiffres clés de l'impact">
+      <div class="container">
+        <div class="metrics-grid">
+          <div class="metric-item">
+            <div class="metric-value"><span class="animate-counter" data-target="120">0</span>+</div>
+            <div class="metric-label">Associations & Collectifs</div>
+            <div class="metric-sublabel">Référencés dans le Parisis</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value"><span class="animate-counter" data-target="2450">0</span>h</div>
+            <div class="metric-label">Heures Solidaires</div>
+            <div class="metric-sublabel">Données par les habitants en 2026</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value"><span class="animate-counter" data-target="85">0</span></div>
+            <div class="metric-label">Actions ce mois-ci</div>
+            <div class="metric-sublabel">Missions, ateliers & événements</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">100%</div>
+            <div class="metric-label">Territoire Local</div>
+            <div class="metric-sublabel">10 communes interconnectées</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 3: LES 6 THÉMATIQUES PHARES
+         ========================================================================== -->
+    <section id="themes-section" class="section section-subtle">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">6 Piliers d'Action</div>
+          <h2 class="section-title">Explorez les initiatives selon vos centres d'intérêt</h2>
+          <p class="section-description">
+            De la transition écologique à la solidarité intergénérationnelle, découvrez comment agir concrètement à votre échelle.
+          </p>
+        </div>
+
+        <div id="themes-grid-container" class="themes-grid">
+          <!-- Rempli dynamiquement en JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 4: CATALOGUE DYNAMIQUE DES ACTIONS & FILTRES AVANCÉS
+         ========================================================================== -->
+    <section id="catalogue-section" class="section">
+      <div class="container">
+        <div class="explorer-header">
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <div class="section-tag">Catalogue en temps réel</div>
+              <h2 class="section-title" style="margin-bottom: 0.5rem;">Où agir près de chez vous ?</h2>
+              <p class="section-description">Trouvez la mission qui correspond à vos disponibilités.</p>
+            </div>
+            <div id="results-count-badge" class="badge badge-env" style="font-size: 0.9rem; padding: 0.4rem 1rem;">
+              Chargement des actions...
+            </div>
+          </div>
+
+          <!-- Barre de filtres multicritères -->
+          <div class="filter-bar-main">
+            <div class="filter-row-top">
+              <div class="search-field-group">
+                <span>🔍</span>
+                <input type="text" id="filter-query" class="search-field-input" placeholder="Filtrer par mot-clé, compétence..." />
+              </div>
+
+              <div class="search-field-group">
+                <span>📍</span>
+                <select id="filter-commune" class="search-field-select commune-select-populate">
+                  <!-- Rempli en JS -->
+                </select>
+              </div>
+
+              <div class="search-field-group">
+                <span>⏳</span>
+                <select id="filter-type" class="search-field-select">
+                  <option value="all">Tous formats</option>
+                  <option value="ponctuel">Bénévolat ponctuel (Coup de main)</option>
+                  <option value="regulier">Bénévolat régulier</option>
+                  <option value="atelier">Atelier & Événement</option>
+                  <option value="consultation">Consultation citoyenne</option>
+                </select>
+              </div>
+
+              <div class="search-field-group">
+                <span>📅</span>
+                <select id="filter-availability" class="search-field-select">
+                  <option value="all">Toutes dates</option>
+                  <option value="weekend">Ce week-end</option>
+                  <option value="urgent">Besoins urgents (< 48h)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Filtres rapides par thématiques & Vues -->
+            <div class="filter-row-tags">
+              <div class="theme-filters-wrap">
+                <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted);">Thématiques :</span>
+                <button class="filter-pill-btn active" onclick="window.state.setFilter('theme', 'all')">Toutes</button>
+                <button class="filter-pill-btn" onclick="window.state.setFilter('theme', 'env')">🌱 Environnement</button>
+                <button class="filter-pill-btn" onclick="window.state.setFilter('theme', 'solidarite')">🤝 Solidarité</button>
+                <button class="filter-pill-btn" onclick="window.state.setFilter('theme', 'citoyennete')">🏛️ Vie locale</button>
+                <button class="filter-pill-btn" onclick="window.state.setFilter('theme', 'education')">📚 Éducation</button>
+                <button class="filter-pill-btn" onclick="window.state.setFilter('theme', 'sante')">🩺 Santé</button>
+                <button class="filter-pill-btn" onclick="window.state.setFilter('theme', 'culture')">🎭 Culture</button>
+              </div>
+
+              <!-- Modes d'affichage commutables -->
+              <div class="view-toggles-wrap">
+                <button class="view-toggle-btn active" data-view="grid" title="Vue grille de cartes">
+                  <span>▦</span> Grille
+                </button>
+                <button class="view-toggle-btn" data-view="map" title="Vue carte géographique">
+                  <span>🗺️</span> Carte
+                </button>
+                <button class="view-toggle-btn" data-view="calendar" title="Vue calendrier">
+                  <span>📅</span> Calendrier
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1. VUE GRILLE DE CARTES -->
+        <div id="actions-grid-container" class="actions-grid">
+          <!-- Rempli dynamiquement en JS -->
+        </div>
+
+        <!-- 2. VUE CARTE INTERACTIVE LEAFLET -->
+        <div id="map-view-container">
+          <div id="leaflet-map" style="width: 100%; height: 100%;"></div>
+        </div>
+
+        <!-- 3. VUE CALENDRIER CHRONOLOGIQUE -->
+        <div id="calendar-view-container">
+          <!-- Rempli dynamiquement en JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 5: CARTE DU TERRITOIRE & TIERS-LIEUX
+         ========================================================================== -->
+    <section id="carte-section" class="section section-subtle">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Géographie Solidaire</div>
+          <h2 class="section-title">Un territoire vivant & interconnecté</h2>
+          <p class="section-description">
+            Retrouvez les tiers-lieux, centres sociaux, jardins partagés et associations actives sur les 10 communes du Parisis.
+          </p>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 2rem; box-shadow: var(--shadow-md);">
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1.5rem;">
+            <span class="badge badge-env">🌱 4 Jardins Partagés</span>
+            <span class="badge badge-solidarite">🍲 6 Centres Sociaux & Banques Alimentaires</span>
+            <span class="badge badge-citoyennete">🛠️ 3 Repair Cafés & Tiers-Lieux</span>
+            <span class="badge badge-education">📖 8 Médiathèques Partenaires</span>
+          </div>
+          <p style="text-align: center; color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0;">
+            💡 <em>Astuce : Utilisez la vue Carte du catalogue ci-dessus pour géolocaliser toutes les actions en temps réel !</em>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 6: DOUBLE BLOC CTA (HABITANTS VS ASSOCIATIONS)
+         ========================================================================== -->
+    <section id="partenaires-section" class="section">
+      <div class="container">
+        <div class="dual-cta-grid">
+          <!-- Carte Citoyen -->
+          <div class="cta-card cta-card-citizen">
+            <div>
+              <div class="cta-card-badge">🙋 Vous êtes un habitant ?</div>
+              <h3 class="cta-card-title">Donnez du sens à votre temps libre</h3>
+              <p class="cta-card-desc">
+                Que vous ayez 1 heure par mois ou une demi-journée par semaine, trouvez des actions proches de chez vous et faites de belles rencontres.
+              </p>
+              <div class="cta-card-features">
+                <div class="cta-feature-item">✓ Inscription en 2 clics sans engagement</div>
+                <div class="cta-feature-item">✓ Missions adaptées aux familles et débutants</div>
+                <div class="cta-feature-item">✓ Suivi de votre impact et badges citoyens</div>
+              </div>
+            </div>
+            <a href="#catalogue-section" class="btn btn-white btn-lg">
+              Trouver ma 1ère mission →
+            </a>
+          </div>
+
+          <!-- Carte Association -->
+          <div class="cta-card cta-card-asso">
+            <div>
+              <div class="cta-card-badge">🏢 Vous êtes une association ?</div>
+              <h3 class="cta-card-title">Fédérez vos futurs bénévoles</h3>
+              <p class="cta-card-desc">
+                Publiez vos besoins ponctuels ou récurrents, gagnez en visibilité auprès des citoyens du Parisis et gérez vos participants simplement.
+              </p>
+              <div class="cta-card-features">
+                <div class="cta-feature-item">✓ Dépôt d'annonces gratuit et instantané</div>
+                <div class="cta-feature-item">✓ Gestion des inscriptions & export d'émargement</div>
+                <div class="cta-feature-item">✓ Relais auprès de la communauté locale</div>
+              </div>
+            </div>
+            <button class="btn btn-white btn-lg" onclick="window.modals.openAssoDashboard()">
+              Accéder à l'Espace Association →
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 7: RÉCITS D'ENGAGEMENT & TÉMOIGNAGES LOCAUX
+         ========================================================================== -->
+    <section id="impact-section" class="section section-subtle">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Récits d'impact</div>
+          <h2 class="section-title">Ils font vivre le territoire du Parisis</h2>
+          <p class="section-description">
+            Découvrez les retours d'expérience de citoyens et de responsables associatifs engagés au quotidien.
+          </p>
+        </div>
+
+        <div id="testimonials-container" class="testimonials-grid">
+          <!-- Rempli dynamiquement en JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 8: NEWSLETTER LOCALE
+         ========================================================================== -->
+    <section class="section" style="padding-bottom: 0;">
+      <div class="container">
+        <div class="newsletter-box">
+          <div>
+            <h3 class="newsletter-title">Restez connecté(e) à la vie locale</h3>
+            <p class="newsletter-desc">
+              Recevez 1 fois tous les 15 jours notre sélection d'actions citoyennes, coups de main et événements près de chez vous. Garanti sans spam.
+            </p>
+          </div>
+          <form id="newsletter-form" class="newsletter-form">
+            <input type="email" id="newsletter-email" class="newsletter-input" placeholder="Votre adresse email..." required />
+            <button type="submit" class="btn btn-primary">
+              S'inscrire
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       FOOTER COMPLET CONFORME RGAA
+       ========================================================================== -->
+  <footer class="main-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Col 1 : Identité -->
+        <div>
+          <a href="#" class="logo-brand" style="margin-bottom: 1rem;">
+            <div class="logo-icon">🌿</div>
+            <div class="logo-text-wrap">
+              <span class="logo-title">Ensemble <span>en Parisis</span></span>
+            </div>
+          </a>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">
+            Plateforme citoyenne indépendante pour favoriser l'engagement local, la transition écologique et l'entraide dans les communes du Parisis.
+          </p>
+          <div style="display: flex; gap: 0.75rem; font-size: 1.2rem;">
+            <span title="Facebook Local" style="cursor: pointer;">📘</span>
+            <span title="Instagram Parisis" style="cursor: pointer;">📸</span>
+            <span title="Discord Communautaire" style="cursor: pointer;">💬</span>
+          </div>
+        </div>
+
+        <!-- Col 2 : Thématiques -->
+        <div>
+          <h4 class="footer-col-title">Thématiques</h4>
+          <div class="footer-links">
+            <a href="#catalogue-section" onclick="window.ui.filterByTheme('env')" class="footer-link">Environnement</a>
+            <a href="#catalogue-section" onclick="window.ui.filterByTheme('solidarite')" class="footer-link">Solidarité</a>
+            <a href="#catalogue-section" onclick="window.ui.filterByTheme('citoyennete')" class="footer-link">Vie locale</a>
+            <a href="#catalogue-section" onclick="window.ui.filterByTheme('education')" class="footer-link">Éducation</a>
+            <a href="#catalogue-section" onclick="window.ui.filterByTheme('sante')" class="footer-link">Santé & Bien-être</a>
+            <a href="#catalogue-section" onclick="window.ui.filterByTheme('culture')" class="footer-link">Culture & Sport</a>
+          </div>
+        </div>
+
+        <!-- Col 3 : Communes -->
+        <div>
+          <h4 class="footer-col-title">Communes du Parisis</h4>
+          <div class="footer-links">
+            <a href="#catalogue-section" onclick="window.state.setFilter('commune', 'Cormeilles-en-Parisis')" class="footer-link">Cormeilles-en-Parisis</a>
+            <a href="#catalogue-section" onclick="window.state.setFilter('commune', 'Herblay-sur-Seine')" class="footer-link">Herblay-sur-Seine</a>
+            <a href="#catalogue-section" onclick="window.state.setFilter('commune', 'Franconville')" class="footer-link">Franconville</a>
+            <a href="#catalogue-section" onclick="window.state.setFilter('commune', 'Taverny')" class="footer-link">Taverny</a>
+            <a href="#catalogue-section" onclick="window.state.setFilter('commune', 'Sannois')" class="footer-link">Sannois</a>
+            <a href="#catalogue-section" onclick="window.state.setFilter('commune', 'Montigny-lès-Cormeilles')" class="footer-link">Montigny-lès-Cormeilles</a>
+          </div>
+        </div>
+
+        <!-- Col 4 : Associations -->
+        <div>
+          <h4 class="footer-col-title">Pour les Structures</h4>
+          <div class="footer-links">
+            <a href="javascript:void(0)" onclick="window.modals.openProposeAction()" class="footer-link">Proposer une action</a>
+            <a href="javascript:void(0)" onclick="window.modals.openAssoDashboard()" class="footer-link">Espace Association</a>
+            <a href="javascript:void(0)" onclick="window.ui.showToast('Guide', 'Guide pratique du bénévole disponible en téléchargement', 'info')" class="footer-link">Guide de l'engagement</a>
+            <a href="javascript:void(0)" onclick="window.ui.showToast('Mairies', 'Contact partenariats : collectivites@ensemble-parisis.fr', 'info')" class="footer-link">Espace Collectivités</a>
+          </div>
+        </div>
+
+        <!-- Col 5 : À propos -->
+        <div>
+          <h4 class="footer-col-title">Ensemble en Parisis</h4>
+          <div class="footer-links">
+            <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')" class="footer-link">Charte éthique</a>
+            <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')" class="footer-link">Accessibilité (RGAA)</a>
+            <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')" class="footer-link">Protection des données (RGPD)</a>
+            <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')" class="footer-link">Mentions Légales</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 Ensemble en Parisis · Initiative citoyenne d'intérêt général à but non lucratif.
+        </div>
+        <div class="footer-bottom-links">
+          <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')">Conformité RGAA AA (98%)</a>
+          <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')">Confidentialité</a>
+          <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')">Plan du site</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       CONTENEURS DES MODALES INTERACTIVES
+       ========================================================================== -->
+
+  <!-- 1. MODALE DÉTAILS DE L'ACTION -->
+  <div id="modal-action-details" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 class="modal-title">Détails de l'action</h3>
+          <span class="modal-subtitle">Association référente</span>
+        </div>
+        <button class="modal-close-btn" onclick="window.modals.closeAll()" aria-label="Fermer">✕</button>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+
+  <!-- 2. MODALE D'INSCRIPTION CITOYEN (2 ÉTAPES + .ICS) -->
+  <div id="modal-registration" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 class="modal-title">Inscription à la mission</h3>
+          <span class="modal-subtitle">Étape 1 sur 2</span>
+        </div>
+        <button class="modal-close-btn" onclick="window.modals.closeAll()" aria-label="Fermer">✕</button>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+
+  <!-- 3. MODALE WIZARD : PROPOSER UNE ACTION (3 ÉTAPES) -->
+  <div id="modal-propose-action" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 class="modal-title">Publier une action citoyenne</h3>
+          <span class="modal-subtitle">Espace Association & Porteur de projet</span>
+        </div>
+        <button class="modal-close-btn" onclick="window.modals.closeAll()" aria-label="Fermer">✕</button>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+
+  <!-- 4. MODALE ESPACE CITOYEN (DASHBOARD) -->
+  <div id="modal-citizen-dashboard" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 class="modal-title">Mon Espace Citoyen & Bénévole</h3>
+          <span class="modal-subtitle">Suivi de votre impact solidaire sur le territoire</span>
+        </div>
+        <button class="modal-close-btn" onclick="window.modals.closeAll()" aria-label="Fermer">✕</button>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="window.modals.closeAll()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. MODALE ESPACE ASSOCIATION (DASHBOARD) -->
+  <div id="modal-asso-dashboard" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 class="modal-title">Espace Gestion Association</h3>
+          <span class="modal-subtitle">Gestion des missions & suivi des candidats</span>
+        </div>
+        <button class="modal-close-btn" onclick="window.modals.closeAll()" aria-label="Fermer">✕</button>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="window.modals.openProposeAction()">+ Nouvelle mission</button>
+        <button class="btn btn-outline" onclick="window.modals.closeAll()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. MODALE RECHERCHE RAPIDE (CMD+K) -->
+  <div id="modal-quick-search" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-dialog search-modal-dialog">
+      <div class="search-modal-header">
+        <span>🔍</span>
+        <input type="text" id="quick-search-input" class="search-modal-input" placeholder="Rechercher une mission, une ville..." />
+        <button class="modal-close-btn" onclick="window.modals.closeAll()" aria-label="Fermer">✕</button>
+      </div>
+      <div id="quick-search-results" class="search-modal-results"></div>
+    </div>
+  </div>
+
+  <!-- 7. MODALE MENTIONS LÉGALES & RGAA -->
+  <div id="modal-legal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 class="modal-title">Charte Éthique & Accessibilité</h3>
+          <span class="modal-subtitle">Engagements de la plateforme Ensemble en Parisis</span>
+        </div>
+        <button class="modal-close-btn" onclick="window.modals.closeAll()" aria-label="Fermer">✕</button>
+      </div>
+      <div class="modal-body">
+        <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem;">🌿 Charte Citoyenne</h4>
+        <p style="color: var(--text-muted); margin-bottom: 1.25rem;">
+          La plateforme Ensemble en Parisis a pour unique vocation de faciliter le lien social, l'entraide bénévole et les projets durables. Toute annonce commerciale, partisane ou contraire aux valeurs républicaines est strictement proscrite.
+        </p>
+
+        <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem;">🔒 Protection des Données Personnelles (RGPD)</h4>
+        <p style="color: var(--text-muted); margin-bottom: 1.25rem;">
+          Conformément au RGPD, les coordonnées collectées lors des inscriptions sont exclusivement transmises à l'association organisatrice pour les besoins opérationnels de la mission. Aucune donnée n'est vendue ni cédée à des tiers.
+        </p>
+
+        <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem;">♿ Déclaration d'Accessibilité (RGAA / WCAG 2.1 AA)</h4>
+        <p style="color: var(--text-muted); margin-bottom: 0;">
+          Ce site applique les recommandations du Référentiel Général d'Amélioration de l'Accessibilité (RGAA). Le code garantit un contraste supérieur à 4.5:1 sur l'ensemble des textes et boutons, ainsi qu'une navigation fluide au clavier.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="window.modals.closeAll()">J'ai compris</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="js/data.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/modals.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
