@@ -5,10 +5,10 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("🌟 Ensemble en Parisis - Application Initialized");
 
-  // 1. Initialiser les sélecteurs de communes et la grille de thématiques
+  // 1. Initialiser les sélecteurs de communes, grille de thématiques et statuts
   window.ui.populateCommunes();
   window.ui.renderThemesGrid();
-  window.ui.renderTestimonials();
+  window.ui.initStatuts();
 
   // 2. Initialiser la carte Leaflet
   window.territoryMap.init();

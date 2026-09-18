@@ -7,6 +7,9 @@
   <meta name="keywords" content="Parisis, bénévolat, citoyenneté, Cormeilles-en-Parisis, Herblay, Franconville, Taverny, solidarité, transition écologique" />
   <title>Ensemble en Parisis | La dynamique citoyenne & solidaire de notre territoire</title>
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="photos/Ensemble_Logo%20violet.png" />
+
   <!-- Google Fonts: Outfit & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -26,17 +29,6 @@
   <!-- Lien d'évitement pour l'accessibilité RGAA -->
   <a href="#main-content" class="skip-link">Passer directement au contenu principal</a>
 
-  <!-- ==========================================================================
-       BANDEAU DE NOTIFICATION HAUTE (ÉVÉNEMENT DU WEEK-END)
-       ========================================================================== -->
-  <aside class="topbar-notification" role="region" aria-label="Annonce prioritaire">
-    <div class="topbar-content">
-      <span class="topbar-badge">🌿 À la une</span>
-      <span>Grand nettoyage citoyen des berges de Seine ce samedi à Herblay !</span>
-      <a class="topbar-link" onclick="window.modals.openRegistration('act-1')">Je m'inscris (reste 4 places) →</a>
-    </div>
-    <button class="topbar-close" onclick="this.parentElement.style.display='none'" aria-label="Fermer le bandeau">✕</button>
-  </aside>
 
   <!-- ==========================================================================
        HEADER PRINCIPAL & NAVIGATION
@@ -45,22 +37,20 @@
     <div class="container header-container">
       <!-- Logo & Identité -->
       <a href="#" class="logo-brand" aria-label="Accueil Ensemble en Parisis">
-        <div class="logo-icon">🌿</div>
-        <div class="logo-text-wrap">
-          <span class="logo-title">Ensemble <span>en Parisis</span></span>
-          <span class="logo-subtitle">Plateforme Citoyenne & Solidaire</span>
-        </div>
+        <img src="photos/Ensemble_Logo%20violet.png" alt="Ensemble en Parisis" class="logo-img" />
       </a>
 
       <!-- Navigation Mega Menu -->
       <nav class="main-nav" role="navigation" aria-label="Navigation principale">
+        <a href="#statuts-section" class="nav-link nav-link-statuts" id="nav-statuts-link" onclick="window.ui.openStatuts(event)">
+          <span>📜 Statuts</span>
+        </a>
         <a href="#catalogue-section" class="nav-link">
           <span>Agir & S'engager</span>
           <span class="nav-link-badge">15+</span>
         </a>
         <a href="#themes-section" class="nav-link">Thématiques</a>
         <a href="#carte-section" class="nav-link">Carte du Territoire</a>
-        <a href="#impact-section" class="nav-link">Récits Locaux</a>
         <a href="#partenaires-section" class="nav-link">Espace Asso</a>
       </nav>
 
@@ -95,8 +85,13 @@
     <section class="hero-section">
       <div class="container">
         <div class="hero-content">
-          <div class="hero-badge-tag">
-            <span>✨</span> 100% Val-d'Oise & Boucle du Parisis
+          <div class="hero-badges-wrapper">
+            <div class="hero-badge-tag">
+              <span>✨</span> 100% Val-d'Oise & Boucle du Parisis
+            </div>
+            <a href="#statuts-section" class="hero-badge-tag hero-badge-statuts" onclick="window.ui.openStatuts(event)">
+              <span>📜</span> Déplier les Statuts Officiels (Loi 1901) →
+            </a>
           </div>
           <h1 class="hero-title">
             Faites bouger votre territoire, <span class="hero-title-highlight">à votre rythme.</span>
@@ -145,6 +140,96 @@
             <button class="tag-pill" onclick="window.state.setFilter('query', 'zéro déchet')">#ZéroDéchet</button>
             <button class="tag-pill" onclick="window.state.setFilter('query', 'devoirs')">#SoutienScolaire</button>
             <button class="tag-pill" onclick="window.state.setFilter('query', 'vélo')">#AtelierVélo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 1.5 : STATUTS OFFICIELS DE L'ASSOCIATION (LOI 1901) - VOLET DÉPLIABLE
+         ========================================================================== -->
+    <section id="statuts-section" class="section statuts-section" aria-label="Statuts de l'Association">
+      <div class="container">
+        <!-- Carte En-tête officiel compacte & interactive -->
+        <div class="statuts-header-card" id="statuts-summary-card">
+          <div class="statuts-header-top">
+            <div class="statuts-badge-group">
+              <span class="badge badge-citoyennete">🏛️ Association Loi 1901 Déclarée</span>
+              <span class="badge" style="background: var(--bg-surface); color: var(--text-main); border: 1px solid var(--border-light);">📍 Siège : 151 av. de la Chesnaie, 95220 Herblay-sur-Seine</span>
+              <span class="badge badge-env">⏳ Durée : 99 ans</span>
+            </div>
+            <div class="statuts-actions-top">
+              <button class="btn btn-outline btn-sm" onclick="window.ui.printStatuts()" title="Imprimer ou Exporter en PDF">
+                🖨️ Imprimer / PDF
+              </button>
+            </div>
+          </div>
+
+          <div class="statuts-title-row">
+            <div>
+              <div class="section-tag" style="margin-bottom: 0.35rem;">Document Fondateur Officiel</div>
+              <h2 class="statuts-main-title">Statuts de l'Association « Ensemble en Parisis »</h2>
+              <p class="statuts-main-desc">
+                Association déclarée régie par la loi du 1<sup>er</sup> juillet 1901 et le décret du 16 août 1901. Validés et adoptés à Herblay-sur-Seine le 18 juin 2026. Document structuré en 16 articles et gouvernance fondatrice.
+              </p>
+            </div>
+          </div>
+
+          <!-- Barre d'action principale pour déplier / replier les statuts -->
+          <div class="statuts-toggle-bar">
+            <button id="statuts-toggle-main-btn" class="btn btn-primary btn-lg statuts-toggle-btn" onclick="window.ui.toggleStatutsSection()" aria-expanded="false" aria-controls="statuts-collapsible-wrapper">
+              <span class="statuts-toggle-icon">📖</span>
+              <span id="statuts-toggle-btn-text">Déplier les statuts officiels (16 articles)</span>
+              <span class="statuts-toggle-chevron">▼</span>
+            </button>
+            <div class="statuts-quick-info">
+              <span class="statuts-info-pill">⚖️ 16 articles</span>
+              <span class="statuts-info-dot">•</span>
+              <span class="statuts-info-pill">👥 Bureau fondateur certifié</span>
+              <span class="statuts-info-dot">•</span>
+              <span class="statuts-info-pill">🔍 Recherche interactive</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Volet déroulant / dépliable des articles et contrôles (replié par défaut) -->
+        <div id="statuts-collapsible-wrapper" class="statuts-collapsible-wrapper" style="display: none;">
+          <!-- Barre de contrôle avec onglets, recherche & actions par lot -->
+          <div class="statuts-controls-bar">
+            <!-- Onglets par thématiques d'articles -->
+            <div class="statuts-tabs-container">
+              <nav class="statuts-tabs-nav" id="statuts-tabs-nav" aria-label="Catégories des statuts">
+                <!-- Rempli dynamiquement en JS -->
+              </nav>
+            </div>
+
+            <!-- Champ de recherche live dans les articles -->
+            <div class="statuts-search-container">
+              <span class="statuts-search-icon">🔍</span>
+              <input type="text" id="statuts-search-input" class="statuts-search-input" placeholder="Rechercher dans les articles (ex: cotisation, siège, dissolution)..." aria-label="Rechercher dans les statuts" />
+            </div>
+
+            <!-- Commandes de déploiement en masse -->
+            <div class="statuts-batch-controls">
+              <button class="btn btn-ghost btn-sm statuts-batch-btn" onclick="window.ui.expandAllArticles()" title="Déplier tous les volets d'articles">
+                📂 Tout déplier
+              </button>
+              <button class="btn btn-ghost btn-sm statuts-batch-btn" onclick="window.ui.collapseAllArticles()" title="Replier tous les volets d'articles">
+                📁 Tout replier
+              </button>
+            </div>
+          </div>
+
+          <!-- Grille / Liste interactive des articles en accordéon -->
+          <div id="statuts-articles-container" class="statuts-articles-container">
+            <!-- Rempli dynamiquement en JS -->
+          </div>
+
+          <!-- Bouton de bas de page pour replier rapidement -->
+          <div class="statuts-bottom-close">
+            <button class="btn btn-outline btn-sm" onclick="window.ui.toggleStatutsSection(false); document.getElementById('statuts-section')?.scrollIntoView({ behavior: 'smooth' });">
+              ▲ Replier les statuts
+            </button>
           </div>
         </div>
       </div>
@@ -372,24 +457,6 @@
       </div>
     </section>
 
-    <!-- ==========================================================================
-         SECTION 7: RÉCITS D'ENGAGEMENT & TÉMOIGNAGES LOCAUX
-         ========================================================================== -->
-    <section id="impact-section" class="section section-subtle">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">Récits d'impact</div>
-          <h2 class="section-title">Ils font vivre le territoire du Parisis</h2>
-          <p class="section-description">
-            Découvrez les retours d'expérience de citoyens et de responsables associatifs engagés au quotidien.
-          </p>
-        </div>
-
-        <div id="testimonials-container" class="testimonials-grid">
-          <!-- Rempli dynamiquement en JS -->
-        </div>
-      </div>
-    </section>
 
     <!-- ==========================================================================
          SECTION 8: NEWSLETTER LOCALE
@@ -422,11 +489,8 @@
       <div class="footer-grid">
         <!-- Col 1 : Identité -->
         <div>
-          <a href="#" class="logo-brand" style="margin-bottom: 1rem;">
-            <div class="logo-icon">🌿</div>
-            <div class="logo-text-wrap">
-              <span class="logo-title">Ensemble <span>en Parisis</span></span>
-            </div>
+          <a href="#" class="logo-brand" style="margin-bottom: 1rem;" aria-label="Accueil Ensemble en Parisis">
+            <img src="photos/Ensemble_Logo%20violet.png" alt="Ensemble en Parisis" class="logo-img footer-logo-img" />
           </a>
           <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">
             Plateforme citoyenne indépendante pour favoriser l'engagement local, la transition écologique et l'entraide dans les communes du Parisis.
@@ -479,6 +543,7 @@
         <div>
           <h4 class="footer-col-title">Ensemble en Parisis</h4>
           <div class="footer-links">
+            <a href="#statuts-section" onclick="window.ui.openStatuts(event)" class="footer-link">📜 Statuts de l'Association</a>
             <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')" class="footer-link">Charte éthique</a>
             <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')" class="footer-link">Accessibilité (RGAA)</a>
             <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')" class="footer-link">Protection des données (RGPD)</a>
@@ -489,9 +554,10 @@
 
       <div class="footer-bottom">
         <div>
-          © 2026 Ensemble en Parisis · Initiative citoyenne d'intérêt général à but non lucratif.
+          © 2026 Ensemble en Parisis · Association Loi 1901 à but non lucratif.
         </div>
         <div class="footer-bottom-links">
+          <a href="#statuts-section" onclick="window.ui.openStatuts(event)">Statuts officiels</a>
           <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')">Conformité RGAA AA (98%)</a>
           <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')">Confidentialité</a>
           <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')">Plan du site</a>

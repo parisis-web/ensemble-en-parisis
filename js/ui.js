@@ -208,24 +208,7 @@ class UIManager {
     `;
   }
 
-  // Rendu des avis et témoignages
-  renderTestimonials() {
-    const container = document.getElementById("testimonials-container");
-    if (!container) return;
 
-    container.innerHTML = TESTIMONIALS_DATA.map(t => `
-      <div class="testimonial-card">
-        <p class="testimonial-quote">« ${t.quote} »</p>
-        <div class="testimonial-author">
-          <img src="${t.avatar}" alt="${t.author}" class="testimonial-avatar" />
-          <div>
-            <div class="testimonial-name">${t.author}</div>
-            <div class="testimonial-role">${t.role}</div>
-          </div>
-        </div>
-      </div>
-    `).join("");
-  }
 
   // Remplissage dynamique des sélecteurs de communes
   populateCommunes() {
@@ -254,6 +237,307 @@ class UIManager {
       }, 30);
     });
   }
+
+  // ==========================================================================
+  // GESTION & RENDU DES STATUTS DE L'ASSOCIATION (LOI 1901) - VOLET DÉPLIABLE
+  // ==========================================================================
+  initStatuts() {
+    this.isStatutsExpanded = false;
+    this.currentStatutsCategory = "all";
+    this.currentStatutsSearch = "";
+    this.renderStatutsTabs();
+    this.renderStatuts();
+    this.setupStatutsListeners();
+
+    // Vérifier si un lien d'ancrage direct (#statuts-section ou #article-X) est présent
+    if (window.location.hash === "#statuts-section") {
+      this.toggleStatutsSection(true);
+    } else if (window.location.hash.startsWith("#article-")) {
+      const artNum = parseInt(window.location.hash.replace("#article-", ""), 10);
+      if (!isNaN(artNum)) {
+        setTimeout(() => this.openArticle(artNum), 300);
+      }
+    }
+  }
+
+  toggleStatutsSection(forceOpen) {
+    const wrapper = document.getElementById("statuts-collapsible-wrapper");
+    const toggleBtn = document.getElementById("statuts-toggle-main-btn");
+    const btnText = document.getElementById("statuts-toggle-btn-text");
+    const summaryCard = document.getElementById("statuts-summary-card");
+
+    if (forceOpen !== undefined) {
+      this.isStatutsExpanded = forceOpen;
+    } else {
+      this.isStatutsExpanded = !this.isStatutsExpanded;
+    }
+
+    if (wrapper) {
+      if (this.isStatutsExpanded) {
+        wrapper.style.display = "block";
+        wrapper.classList.add("is-open");
+      } else {
+        wrapper.style.display = "none";
+        wrapper.classList.remove("is-open");
+      }
+    }
+
+    if (toggleBtn) {
+      toggleBtn.setAttribute("aria-expanded", this.isStatutsExpanded ? "true" : "false");
+      if (this.isStatutsExpanded) {
+        toggleBtn.classList.add("is-active");
+      } else {
+        toggleBtn.classList.remove("is-active");
+      }
+    }
+
+    if (btnText) {
+      btnText.textContent = this.isStatutsExpanded
+        ? "Replier les statuts officiels"
+        : "Déplier les statuts officiels (16 articles)";
+    }
+
+    if (summaryCard) {
+      if (this.isStatutsExpanded) {
+        summaryCard.classList.add("is-expanded");
+      } else {
+        summaryCard.classList.remove("is-expanded");
+      }
+    }
+  }
+
+  openStatuts(event) {
+    if (event && event.preventDefault) {
+      event.preventDefault();
+    }
+    this.toggleStatutsSection(true);
+    const section = document.getElementById("statuts-section");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
+  openArticle(num) {
+    this.toggleStatutsSection(true);
+    if (this.currentStatutsCategory !== "all" && this.currentStatutsCategory !== "signataires") {
+      this.currentStatutsCategory = "all";
+      this.renderStatutsTabs();
+      this.renderStatuts();
+    }
+
+    setTimeout(() => {
+      const artElement = document.getElementById(`article-${num}`);
+      if (artElement) {
+        artElement.open = true;
+        artElement.scrollIntoView({ behavior: "smooth", block: "center" });
+        artElement.classList.add("highlight-article");
+        setTimeout(() => artElement.classList.remove("highlight-article"), 2000);
+      }
+    }, 150);
+  }
+
+  expandAllArticles() {
+    this.toggleStatutsSection(true);
+    const detailsList = document.querySelectorAll("#statuts-articles-container .statuts-accordion-card");
+    detailsList.forEach(det => det.open = true);
+    this.showToast("Statuts", "Tous les articles sont maintenant dépliés.", "info");
+  }
+
+  collapseAllArticles() {
+    const detailsList = document.querySelectorAll("#statuts-articles-container .statuts-accordion-card");
+    detailsList.forEach(det => det.open = false);
+    this.showToast("Statuts", "Tous les articles ont été repliés.", "info");
+  }
+
+  renderStatutsTabs() {
+    const tabsContainer = document.getElementById("statuts-tabs-nav");
+    if (!tabsContainer || typeof STATUTS_DATA === "undefined") return;
+
+    tabsContainer.innerHTML = STATUTS_DATA.categories.map(cat => {
+      const isActive = (this.currentStatutsCategory || "all") === cat.id;
+      let count = "";
+      if (cat.id === "all") count = `(${STATUTS_DATA.articles.length})`;
+      else if (cat.id === "signataires") count = `(${STATUTS_DATA.signataires.length})`;
+      else {
+        const catCount = STATUTS_DATA.articles.filter(a => a.category === cat.id).length;
+        count = `(${catCount})`;
+      }
+
+      return `
+        <button class="statuts-tab-btn ${isActive ? 'active' : ''}" data-category="${cat.id}" onclick="window.ui.filterStatutsCategory('${cat.id}')">
+          <span class="statuts-tab-icon">${cat.icon}</span>
+          <span class="statuts-tab-text">${cat.label.replace(/^[^\s]+\s/, '')}</span>
+          <span class="statuts-tab-badge">${count}</span>
+        </button>
+      `;
+    }).join("");
+  }
+
+  filterStatutsCategory(categoryId) {
+    this.currentStatutsCategory = categoryId;
+    this.renderStatutsTabs();
+    this.renderStatuts();
+  }
+
+  searchStatuts(query) {
+    this.currentStatutsSearch = (query || "").trim().toLowerCase();
+    if (this.currentStatutsSearch && !this.isStatutsExpanded) {
+      this.toggleStatutsSection(true);
+    }
+    this.renderStatuts();
+  }
+
+  renderStatuts() {
+    const container = document.getElementById("statuts-articles-container");
+    if (!container || typeof STATUTS_DATA === "undefined") return;
+
+    const category = this.currentStatutsCategory || "all";
+    const query = this.currentStatutsSearch || "";
+
+    // Filtrer les articles
+    let articles = STATUTS_DATA.articles;
+    if (category !== "all" && category !== "signataires") {
+      articles = articles.filter(a => a.category === category);
+    }
+
+    if (query) {
+      articles = articles.filter(a => 
+        a.title.toLowerCase().includes(query) || 
+        a.content.toLowerCase().includes(query) ||
+        `article ${a.num}`.includes(query)
+      );
+    }
+
+    let html = "";
+
+    // Si on a choisi l'onglet des signataires
+    if (category === "signataires") {
+      html = this.renderSignaturesBlock();
+      container.innerHTML = html;
+      return;
+    }
+
+    if (articles.length === 0) {
+      html = `
+        <div class="statuts-empty-state">
+          <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔍</div>
+          <h4>Aucun article ne correspond à votre recherche "${query}"</h4>
+          <p>Essayez avec d'autres termes comme « adhésion », « siège », « bureau » ou « cotisation ».</p>
+          <button class="btn btn-outline btn-sm" onclick="window.ui.searchStatuts(''); const input = document.getElementById('statuts-search-input'); if(input) input.value='';">
+            Réinitialiser la recherche
+          </button>
+        </div>
+      `;
+      container.innerHTML = html;
+      return;
+    }
+
+    // Si recherche active, ouvrir tous les articles correspondants par défaut
+    const shouldOpenByDefault = Boolean(query);
+
+    html = articles.map(art => {
+      // Trouver la catégorie pour afficher un badge
+      const catObj = STATUTS_DATA.categories.find(c => c.id === art.category);
+      const catLabel = catObj ? catObj.label.replace(/^[^\s]+\s/, '') : "";
+
+      return `
+        <details class="statuts-accordion-card" id="article-${art.num}" ${shouldOpenByDefault ? 'open' : ''}>
+          <summary class="statuts-accordion-header">
+            <div class="statuts-accordion-title-group">
+              <span class="statuts-num-badge">Art. ${art.num}</span>
+              <h3 class="statuts-article-title">${art.title}</h3>
+              ${catLabel ? `<span class="statuts-category-chip">${catLabel}</span>` : ''}
+            </div>
+            <div class="statuts-accordion-actions">
+              <button type="button" class="statuts-copy-btn" onclick="event.stopPropagation(); event.preventDefault(); window.ui.copyArticleLink(${art.num})" title="Copier le lien direct vers cet article" aria-label="Copier le lien">
+                🔗
+              </button>
+              <span class="statuts-accordion-chevron" aria-hidden="true">▼</span>
+            </div>
+          </summary>
+          <div class="statuts-article-body">
+            ${art.content}
+          </div>
+        </details>
+      `;
+    }).join("");
+
+    // Si onglet "all", afficher le bloc des signatures à la fin
+    if (category === "all" && !query) {
+      html += this.renderSignaturesBlock();
+    }
+
+    container.innerHTML = html;
+  }
+
+  renderSignaturesBlock() {
+    if (typeof STATUTS_DATA === "undefined") return "";
+    return `
+      <div class="statuts-signatures-section" id="statuts-signatures">
+        <div class="statuts-signatures-header">
+          <div class="signatures-stamp-badge">
+            <span class="stamp-icon">⚖️</span>
+            <div>
+              <strong>Statuts certifiés & adoptés</strong>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Fait à Herblay-sur-Seine · Le ${STATUTS_DATA.dateValidation}</div>
+            </div>
+          </div>
+          <p class="signatures-intro">
+            En foi de quoi, les présents statuts ont été formellement adoptés et signés par les membres du bureau fondateur :
+          </p>
+        </div>
+
+        <div class="signatures-grid">
+          ${STATUTS_DATA.signataires.map(s => `
+            <div class="signature-card">
+              <div class="signature-role">${s.role}</div>
+              <div class="signature-name">${s.nom}</div>
+              <div class="signature-handwritten">${s.signature}</div>
+              <div class="signature-stamp">✓ Original signé</div>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  copyArticleLink(num) {
+    const url = `${window.location.origin}${window.location.pathname}#article-${num}`;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url);
+    }
+    this.showToast("Lien copié !", `Lien direct vers l'article ${num} copié dans le presse-papier.`, "info");
+  }
+
+  printStatuts() {
+    // S'assurer que le volet et tous les articles sont ouverts avant l'impression
+    this.toggleStatutsSection(true);
+    this.expandAllArticles();
+    setTimeout(() => {
+      window.print();
+    }, 250);
+  }
+
+  setupStatutsListeners() {
+    const searchInput = document.getElementById("statuts-search-input");
+    if (searchInput) {
+      searchInput.addEventListener("input", (e) => {
+        this.searchStatuts(e.target.value);
+      });
+    }
+
+    window.addEventListener("hashchange", () => {
+      if (window.location.hash === "#statuts-section") {
+        this.toggleStatutsSection(true);
+      } else if (window.location.hash.startsWith("#article-")) {
+        const artNum = parseInt(window.location.hash.replace("#article-", ""), 10);
+        if (!isNaN(artNum)) {
+          this.openArticle(artNum);
+        }
+      }
+    });
+  }
 }
 
 window.ui = new UIManager();
+

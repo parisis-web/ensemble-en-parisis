@@ -302,26 +302,181 @@ const CITIZEN_BADGES = [
   { id: "badge-4", name: "Pilier Local", icon: "🏆", desc: "Actions dans 3 communes différentes", unlocked: false }
 ];
 
-const TESTIMONIALS_DATA = [
-  {
-    id: "test-1",
-    author: "Sophie M.",
-    role: "Bénévole à Cormeilles-en-Parisis",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80",
-    quote: "J'ai participé à mon premier ramassage citoyen il y a deux mois via la plateforme. En 2 clics j'étais inscrite et j'ai rencontré des voisins formidables !"
-  },
-  {
-    id: "test-2",
-    author: "Marc L.",
-    role: "Président de l'Atelier Vélo Parisis",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
-    quote: "Ensemble en Parisis nous a permis de recruter 8 réparateurs bénévoles réguliers pour nos Repair Cafés. Un outil indispensable pour les assos locales."
-  },
-  {
-    id: "test-3",
-    author: "Karima B.",
-    role: "Habitante de Franconville",
-    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80",
-    quote: "Le système de filtres par temps disponible m'a permis de donner des coups de main le samedi matin sans bousculer mon planning familial."
-  }
-];
+
+
+const STATUTS_DATA = {
+  titre: "Statuts ASSOCIATION LOI 1901",
+  nomAssociation: "Ensemble en Parisis",
+  dateValidation: "18 juin 2026",
+  lieuValidation: "Herblay-sur-Seine",
+  siegeSocial: "151 avenue de la Chesnaie, 95220 Herblay-sur-Seine",
+  duree: "99 ans",
+  categories: [
+    { id: "all", label: "📄 Tous les articles", icon: "📑" },
+    { id: "identite", label: "🏛️ Identité & Objet", icon: "🏛️" },
+    { id: "membres", label: "👥 Membres & Cotisations", icon: "👥" },
+    { id: "gouvernance", label: "🗳️ Gouvernance & AG", icon: "🗳️" },
+    { id: "finances", label: "💰 Finances & Fonctionnement", icon: "💰" },
+    { id: "signataires", label: "✍️ Signataires officiels", icon: "✍️" }
+  ],
+  articles: [
+    {
+      num: 1,
+      category: "identite",
+      title: "Article premier : Dénomination",
+      content: "Il est fondé entre les adhérents aux présents statuts une association régie par la loi du 1er juillet 1901 et le décret du 16 août 1901 ayant pour titre <strong>« Ensemble en Parisis »</strong>."
+    },
+    {
+      num: 2,
+      category: "identite",
+      title: "Article 2 : Objet",
+      content: `Cette association a pour objet de <strong>créer un espace d’expression et d’éducation populaire</strong> visant à développer du lien entre les habitant(e)s d’Herblay et plus largement du Parisis afin d’encourager la participation à la vie du territoire.<br/><br/>
+      <strong>Exemples d’activités envisagées :</strong>
+      <ul class="statuts-list">
+        <li>Pique-niques citoyens et conviviaux,</li>
+        <li>Participation au <em>« Clean up Day »</em> mondial (nettoyage des rives de la Seine avec les communes avoisinantes),</li>
+        <li>Organisation de cafés rencontre/débat et d'échanges d'idées,</li>
+        <li>Favorisation du lien intergénérationnel par un festival de l’image mettant en relation des jeunes avec des personnes âgées,</li>
+        <li>Activités croisées et partenariats avec d’autres associations locales…</li>
+      </ul>`
+    },
+    {
+      num: 3,
+      category: "identite",
+      title: "Article 3 : Siège social",
+      content: "Le siège social est fixé au <strong>151 avenue de la Chesnaie à 95220 Herblay sur Seine</strong>."
+    },
+    {
+      num: 4,
+      category: "identite",
+      title: "Article 4 : Durée",
+      content: "La durée de l’association est fixée à <strong>99 ans</strong>."
+    },
+    {
+      num: 5,
+      category: "membres",
+      title: "Article 5 : Composition",
+      content: `L’association se compose de :
+      <ul class="statuts-list">
+        <li><strong>a) Membres fondateurs</strong></li>
+        <li><strong>b) Membres bienfaiteurs</strong></li>
+        <li><strong>c) Membres actifs ou adhérents</strong></li>
+        <li><strong>d) Membres d’honneur</strong></li>
+      </ul>`
+    },
+    {
+      num: 6,
+      category: "membres",
+      title: "Article 6 : Admission",
+      content: "Peut devenir membre toute personne physique ou morale adhérant aux présents statuts et aux valeurs portées par l’association."
+    },
+    {
+      num: 7,
+      category: "membres",
+      title: "Article 7 : Membres / Cotisation",
+      content: `Sont <strong>membres fondateurs</strong> ceux qui ont pris l’engagement de verser une cotisation annuelle de <strong>15€</strong>.<br/><br/>
+      Sont <strong>membres bienfaiteurs</strong> ceux qui ont acquitté une cotisation libre d’un montant supérieur à celui de la cotisation.<br/><br/>
+      Les <strong>adhérents</strong> verseront une cotisation d’un montant libre.<br/><br/>
+      Le montant de la cotisation pourra être modifié par l’assemblée générale ordinaire.`
+    },
+    {
+      num: 8,
+      category: "membres",
+      title: "Article 8 : Radiation",
+      content: `La qualité de membre se perd par :
+      <ul class="statuts-list">
+        <li>La démission,</li>
+        <li>Le non-paiement de la cotisation,</li>
+        <li>L’exclusion prononcée par le conseil d’administration pour motif grave, notamment non-respect des statuts ou comportement contraire aux valeurs de l’association, après que l’intéressé·e a été invité·e à présenter sa défense,</li>
+        <li>Le décès.</li>
+      </ul>`
+    },
+    {
+      num: 9,
+      category: "gouvernance",
+      title: "Article 9 : Assemblée générale ordinaire",
+      content: `L’assemblée générale ordinaire comprend l’ensemble des membres à jour de leur cotisation.<br/><br/>
+      Elle se réunit au moins <strong>une fois par an</strong> avec un ordre du jour prédéfini et après envoi d’une convocation <strong>15 jours avant</strong> la date prévue pour l’assemblée. La période prévue pour l’assemblée générale annuelle sera <strong>juin</strong> (anniversaire de création) ou <strong>décembre</strong> (fin d’exercice budgétaire).<br/><br/>
+      Elle :
+      <ul class="statuts-list">
+        <li>Approuve le rapport moral et financier,</li>
+        <li>Définit les orientations,</li>
+        <li>Élit les membres du conseil d’administration.</li>
+      </ul>
+      Les décisions sont prises à la majorité des membres présents ou représentés. En cas d’égalité, la voix du président sera prépondérante.`
+    },
+    {
+      num: 10,
+      category: "gouvernance",
+      title: "Article 10 : Assemblée générale extraordinaire",
+      content: `Elle est compétente pour modifier les statuts ou prononcer la dissolution.<br/><br/>
+      Les décisions sont prises à la <strong>majorité des deux tiers</strong>.`
+    },
+    {
+      num: 11,
+      category: "gouvernance",
+      title: "Article 11 : Conseil d’administration",
+      content: `L’association est dirigée par un <strong>conseil d’administration élu pour 1 (un) an</strong> par l’assemblée générale. Le conseil d’administration visera la <strong>parité hommes et femmes</strong>.<br/><br/>
+      Il met en œuvre les décisions de l’assemblée générale et assure la gestion de l’association.<br/><br/>
+      Le Conseil d’administration se compose à sa création des membres fondateurs. Ce dernier sera renouvelé par l’Assemblée générale ordinaire : le nombre des membres et les administrateurs seront choisis à la majorité simple.<br/><br/>
+      Le conseil d’administration se réunit aussi souvent que nécessaire avec <em>a minima</em> la moitié de ses membres. Les décisions sont validées à la majorité simple à défaut de consensus.`
+    },
+    {
+      num: 12,
+      category: "gouvernance",
+      title: "Article 12 : Bureau",
+      content: `Le conseil d’administration élit en son sein, à main levée, un bureau composé de :
+      <ul class="statuts-list">
+        <li>Un président</li>
+        <li>Un trésorier</li>
+        <li>Un secrétaire</li>
+      </ul>
+      En complément des trois membres indispensables à la création de l’association, ont été élu.e.s :
+      <ul class="statuts-list">
+        <li>Un président d’honneur</li>
+        <li>Une vice-présidente</li>
+        <li>Une secrétaire adjointe</li>
+      </ul>
+      Le bureau assure la gestion courante. Par principe de bonne gouvernance, les fonctions de président·e, trésorier·e, secrétaire ne peuvent être exercées par un·e élu·e en mandat exécutif local. De même que les fonctions de Président et trésorier ne sont cumulables.`
+    },
+    {
+      num: 13,
+      category: "finances",
+      title: "Article 13 : Ressources",
+      content: `Les ressources de l’association comprennent :
+      <ul class="statuts-list">
+        <li>Les cotisations,</li>
+        <li>Les dons manuels,</li>
+        <li>Les subventions publiques ou privées,</li>
+        <li>Les recettes d’activités,</li>
+        <li>Toute ressource autorisée par les lois et règlements en vigueur.</li>
+      </ul>`
+    },
+    {
+      num: 14,
+      category: "finances",
+      title: "Article 14 : Indemnités",
+      content: `Toutes les fonctions, y compris celles des membres du conseil d’administration et du bureau, sont <strong>gratuites et bénévoles</strong>. Seuls les frais occasionnés par l’accomplissement de leur mandat sont remboursés sur justificatifs. Le rapport financier présenté à l’assemblée générale ordinaire présente, par bénéficiaire, les remboursements de frais de mission, de déplacement ou de représentation.<br/><br/>
+      Ces dispositions pourront être affinées dans un règlement intérieur (nature des frais, des missions, qualité des bénéficiaires, etc.).`
+    },
+    {
+      num: 15,
+      category: "finances",
+      title: "Article 15 : Règlement intérieur",
+      content: "Un règlement intérieur ou une charte éthique pourra être établi ultérieurement par le conseil d’administration pour compléter les présents statuts."
+    },
+    {
+      num: 16,
+      category: "finances",
+      title: "Article 16 : Dissolution",
+      content: `En cas de dissolution, l’assemblée générale désigne un ou plusieurs liquidateurs.<br/><br/>
+      L’actif net est dévolu à une ou plusieurs associations poursuivant des objectifs similaires.`
+    }
+  ],
+  signataires: [
+    { role: "Le Président", nom: "Paul Delage", signature: "Delage" },
+    { role: "Le Trésorier", nom: "Nasser Smat", signature: "smati" },
+    { role: "Le Secrétaire", nom: "Daniel Thieux", signature: "Thieux" }
+  ]
+};
+

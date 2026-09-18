@@ -550,13 +550,28 @@ END:VCALENDAR`;
     const container = document.getElementById("quick-search-results");
     if (!container) return;
 
+    const q = (query || "").toLowerCase();
+    const statutsMatch = !query || "statuts association loi 1901 objet herblay siege reglement charte bureau delage smat thieux".includes(q);
+
     const filtered = window.state.actions.filter(a => {
       if (!query) return true;
-      const q = query.toLowerCase();
       return a.title.toLowerCase().includes(q) || a.commune.toLowerCase().includes(q) || a.association.toLowerCase().includes(q);
     }).slice(0, 5);
 
-    container.innerHTML = filtered.map(a => `
+    let html = "";
+    if (statutsMatch) {
+      html += `
+        <div class="search-result-item" onclick="window.modals.closeAll(); window.ui.openStatuts();" style="border-left: 3px solid var(--primary);">
+          <div>
+            <strong>📜 Statuts Officiels de l'Association (Loi 1901)</strong>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">🏛️ 16 articles, siège à Herblay-sur-Seine, gouvernance & membres</div>
+          </div>
+          <span class="badge badge-citoyennete">Loi 1901</span>
+        </div>
+      `;
+    }
+
+    html += filtered.map(a => `
       <div class="search-result-item" onclick="window.modals.openDetails('${a.id}')">
         <div>
           <strong>${a.title}</strong>
@@ -565,7 +580,10 @@ END:VCALENDAR`;
         <span class="badge badge-${a.theme}">${THEMES_DATA[a.theme].shortName}</span>
       </div>
     `).join("");
+
+    container.innerHTML = html;
   }
 }
 
 window.modals = new ModalManager();
+
