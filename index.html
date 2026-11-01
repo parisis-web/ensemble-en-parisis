@@ -29,6 +29,15 @@
   <!-- Lien d'évitement pour l'accessibilité RGAA -->
   <a href="#main-content" class="skip-link">Passer directement au contenu principal</a>
 
+  <!-- Bandeau d'annonce événement Vie Locale -->
+  <aside class="topbar-notification" role="complementary" aria-label="Événement à la une" id="topbar-event" style="background: linear-gradient(90deg, #0C4A6E 0%, #0284C7 50%, #0369A1 100%);">
+    <div class="topbar-content">
+      <span class="topbar-badge" style="background: rgba(255,255,255,0.25);">Vie Locale</span>
+      <span><strong>Samedi 17 Octobre (10h) :</strong> Balade guidée « Redécouverte de la forêt herblaysienne » avec Hugues Verdière (Gratuit, Herblay)</span>
+      <a class="topbar-link" onclick="window.modals.openDetails('act-foret-herblay')">Voir les détails &amp; s'inscrire →</a>
+      <button class="topbar-close" onclick="document.getElementById('topbar-event').remove()" aria-label="Fermer l'annonce">✕</button>
+    </div>
+  </aside>
 
   <!-- ==========================================================================
        HEADER PRINCIPAL & NAVIGATION
@@ -42,16 +51,21 @@
 
       <!-- Navigation Mega Menu -->
       <nav class="main-nav" role="navigation" aria-label="Navigation principale">
+        <a href="#adhesion-section" class="nav-link nav-link-adhesion" id="nav-adhesion-link" onclick="window.ui.openAdhesion(event)">
+          <span>Adhésion</span>
+        </a>
         <a href="#statuts-section" class="nav-link nav-link-statuts" id="nav-statuts-link" onclick="window.ui.openStatuts(event)">
-          <span>📜 Statuts</span>
+          <span>Statuts</span>
         </a>
         <a href="#catalogue-section" class="nav-link">
           <span>Agir & S'engager</span>
           <span class="nav-link-badge">15+</span>
         </a>
         <a href="#themes-section" class="nav-link">Thématiques</a>
-        <a href="#carte-section" class="nav-link">Carte du Territoire</a>
-        <a href="#partenaires-section" class="nav-link">Espace Asso</a>
+        <a href="javascript:void(0)" onclick="window.modals.openAssoDashboard()" class="nav-link">Espace Asso</a>
+        <a href="mailto:ensembleenparisis@gmail.com" class="nav-link nav-link-contact" id="nav-contact-link" title="Écrire à l'association Ensemble en Parisis (ensembleenparisis@gmail.com)">
+          <span>Contact</span>
+        </a>
       </nav>
 
       <!-- Barre d'outils et CTA -->
@@ -89,12 +103,15 @@
             <div class="hero-badge-tag">
               <span>✨</span> 100% Val-d'Oise & Boucle du Parisis
             </div>
+            <a href="#adhesion-section" class="hero-badge-tag hero-badge-adhesion" onclick="window.ui.openAdhesion(event)">
+              <span>✍️</span> Déplier le Bulletin d'Adhésion →
+            </a>
             <a href="#statuts-section" class="hero-badge-tag hero-badge-statuts" onclick="window.ui.openStatuts(event)">
               <span>📜</span> Déplier les Statuts Officiels (Loi 1901) →
             </a>
           </div>
           <h1 class="hero-title">
-            Echanger, Agir, Rapprocher, <span class="hero-title-highlight">à votre rythme.</span>
+            Échanger, Agir, Rapprocher. <span class="hero-title-highlight">Participer à la vie du Parisis</span>
           </h1>
           <p class="hero-subtitle">
             Rejoignez des centaines de citoyens, bénévoles et associations engagés pour un territoire plus solidaire, écologique et dynamique.
@@ -132,15 +149,6 @@
             </button>
           </div>
 
-          <!-- Tags populaires -->
-          <div class="hero-popular-tags">
-            <span class="popular-label">Tendances locales :</span>
-            <button class="tag-pill" onclick="window.state.setFilter('query', 'maraude')">#Maraude</button>
-            <button class="tag-pill" onclick="window.state.setFilter('query', 'jardin')">#JardinPartagé</button>
-            <button class="tag-pill" onclick="window.state.setFilter('query', 'zéro déchet')">#ZéroDéchet</button>
-            <button class="tag-pill" onclick="window.state.setFilter('query', 'devoirs')">#SoutienScolaire</button>
-            <button class="tag-pill" onclick="window.state.setFilter('query', 'vélo')">#AtelierVélo</button>
-          </div>
         </div>
       </div>
     </section>
@@ -236,30 +244,333 @@
     </section>
 
     <!-- ==========================================================================
-         SECTION 2: MÉTRIQUES D'IMPACT EN TEMPS RÉEL (BANDEAU DE RÉASSURANCE)
+         SECTION 1.6 : BULLETIN D'ADHÉSION OFFICIEL - VOLET DÉPLIABLE
          ========================================================================== -->
-    <section class="metrics-section" aria-label="Chiffres clés de l'impact">
+    <section id="adhesion-section" class="section adhesion-section" aria-label="Bulletin d'adhésion à l'association">
       <div class="container">
-        <div class="metrics-grid">
-          <div class="metric-item">
-            <div class="metric-value"><span class="animate-counter" data-target="120">0</span>+</div>
-            <div class="metric-label">Associations & Collectifs</div>
-            <div class="metric-sublabel">Référencés dans le Parisis</div>
+        <!-- Carte En-tête officiel compacte & interactive -->
+        <div class="adhesion-header-card" id="adhesion-summary-card">
+          <div class="adhesion-header-top">
+            <div class="adhesion-badge-group">
+              <span class="badge badge-adhesion">✍️ Bulletin d'Adhésion</span>
+              <span class="badge" style="background: var(--bg-surface); color: var(--text-main); border: 1px solid var(--border-light);">📍 Ouvert à tous les habitants du Parisis</span>
+              <span class="badge badge-env">💡 Cotisation solidaire</span>
+            </div>
+            <div class="adhesion-actions-top">
+              <button class="btn btn-outline btn-sm" onclick="window.ui.printAdhesion(true)" title="Imprimer un bulletin vierge à remplir à la main">
+                📄 Bulletin vierge (PDF)
+              </button>
+              <button class="btn btn-outline btn-sm" onclick="window.ui.printAdhesion(false)" title="Imprimer ou Exporter la fiche en PDF">
+                🖨️ Imprimer / PDF
+              </button>
+            </div>
           </div>
-          <div class="metric-item">
-            <div class="metric-value"><span class="animate-counter" data-target="2450">0</span>h</div>
-            <div class="metric-label">Heures Solidaires</div>
-            <div class="metric-sublabel">Données par les habitants en 2026</div>
+
+          <div class="adhesion-title-row">
+            <div>
+              <div class="section-tag" style="margin-bottom: 0.35rem; color: #7C3AED; background: #EDE9FE;">Rejoindre l'Association</div>
+              <h2 class="adhesion-main-title">Bulletin d'Adhésion — Ensemble en Parisis</h2>
+              <p class="adhesion-main-desc">
+                Rejoignez-nous, partagez vos idées et participez activement à la vie de notre association ! Dépliez la fiche ci-dessous pour adhérer en ligne en quelques clics ou pour imprimer le formulaire officiel.
+              </p>
+            </div>
           </div>
-          <div class="metric-item">
-            <div class="metric-value"><span class="animate-counter" data-target="85">0</span></div>
-            <div class="metric-label">Actions ce mois-ci</div>
-            <div class="metric-sublabel">Missions, ateliers & événements</div>
+
+          <!-- Barre d'action principale pour déplier / replier l'adhésion -->
+          <div class="adhesion-toggle-bar">
+            <button id="adhesion-toggle-main-btn" class="btn btn-primary btn-lg adhesion-toggle-btn" onclick="window.ui.toggleAdhesionSection()" aria-expanded="false" aria-controls="adhesion-collapsible-wrapper">
+              <span class="adhesion-toggle-icon">✍️</span>
+              <span id="adhesion-toggle-btn-text">Déplier la fiche d'adhésion officielle</span>
+              <span class="adhesion-toggle-chevron">▼</span>
+            </button>
+            <div class="adhesion-quick-info">
+              <span class="adhesion-info-pill">① Coordonnées</span>
+              <span class="adhesion-info-dot">•</span>
+              <span class="adhesion-info-pill">② Adhésion</span>
+              <span class="adhesion-info-dot">•</span>
+              <span class="adhesion-info-pill">③ Participation</span>
+              <span class="adhesion-info-dot">•</span>
+              <span class="adhesion-info-pill">④ Validation</span>
+            </div>
           </div>
-          <div class="metric-item">
-            <div class="metric-value">100%</div>
-            <div class="metric-label">Territoire Local</div>
-            <div class="metric-sublabel">10 communes interconnectées</div>
+        </div>
+
+        <!-- Volet déroulant / dépliable de la fiche d'adhésion (replié par défaut) -->
+        <div id="adhesion-collapsible-wrapper" class="adhesion-collapsible-wrapper" style="display: none;">
+          <div class="adhesion-sheet-wrapper">
+            
+            <!-- La Fiche d'Adhésion Officielle (Reproduction fidèle et soignée) -->
+            <div class="adhesion-sheet-card" id="adhesion-printable-sheet">
+              <!-- En-tête avec Logo & Titre du document -->
+              <div class="adhesion-sheet-header">
+                <img src="photos/Ensemble_Logo%20violet.png" alt="Ensemble en Parisis" class="adhesion-sheet-logo" />
+                <h1 class="adhesion-sheet-title">BULLETIN D’ADHÉSION</h1>
+                <p class="adhesion-sheet-subtitle">Rejoignez-nous, partagez vos idées et participez à la vie de notre association !</p>
+              </div>
+
+              <!-- Formulaire d'adhésion -->
+              <form id="adhesion-form" class="adhesion-form" onsubmit="window.ui.submitAdhesion(event)">
+                
+                <!-- SECTION ① : VOS COORDONNÉES -->
+                <div class="adhesion-section-block">
+                  <div class="adhesion-section-header banner-purple">
+                    <span>① VOS COORDONNÉES</span>
+                  </div>
+                  <div class="adhesion-section-content">
+                    <div class="adhesion-grid-2">
+                      <div class="adhesion-field-inline">
+                        <label for="adh-nom" class="adhesion-label">Nom :</label>
+                        <input type="text" id="adh-nom" name="nom" class="adhesion-input" placeholder="Votre nom de famille" required />
+                      </div>
+                      <div class="adhesion-field-inline">
+                        <label for="adh-prenom" class="adhesion-label">Prénom :</label>
+                        <input type="text" id="adh-prenom" name="prenom" class="adhesion-input" placeholder="Votre prénom" required />
+                      </div>
+                    </div>
+
+                    <div class="adhesion-field-inline full-width">
+                      <label for="adh-adresse" class="adhesion-label">Adresse :</label>
+                      <input type="text" id="adh-adresse" name="adresse" class="adhesion-input" placeholder="Numéro et nom de voie" required />
+                    </div>
+
+                    <div class="adhesion-grid-2">
+                      <div class="adhesion-field-inline">
+                        <label for="adh-codepostal" class="adhesion-label">Code postal :</label>
+                        <input type="text" id="adh-codepostal" name="codepostal" class="adhesion-input" placeholder="95220, 95240..." maxlength="5" required />
+                      </div>
+                      <div class="adhesion-field-inline">
+                        <label for="adh-ville" class="adhesion-label">Ville :</label>
+                        <input type="text" id="adh-ville" name="ville" list="adhesion-communes-list" class="adhesion-input" placeholder="Herblay-sur-Seine, Cormeilles..." required />
+                        <datalist id="adhesion-communes-list">
+                          <option value="Herblay-sur-Seine">
+                          <option value="Cormeilles-en-Parisis">
+                          <option value="Franconville">
+                          <option value="Taverny">
+                          <option value="Sannois">
+                          <option value="Montigny-lès-Cormeilles">
+                          <option value="Beauchamp">
+                          <option value="La Frette-sur-Seine">
+                          <option value="Bessancourt">
+                          <option value="Pierrelaye">
+                        </datalist>
+                      </div>
+                    </div>
+
+                    <div class="adhesion-grid-2">
+                      <div class="adhesion-field-inline">
+                        <label for="adh-telephone" class="adhesion-label">Téléphone :</label>
+                        <input type="tel" id="adh-telephone" name="telephone" class="adhesion-input" placeholder="06 12 34 56 78" required />
+                      </div>
+                      <div class="adhesion-field-inline">
+                        <label for="adh-email" class="adhesion-label">E-mail :</label>
+                        <input type="email" id="adh-email" name="email" class="adhesion-input" placeholder="votre.email@exemple.fr" required />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- SECTION ② : VOTRE ADHÉSION -->
+                <div class="adhesion-section-block">
+                  <div class="adhesion-section-header banner-magenta">
+                    <span>② VOTRE ADHÉSION</span>
+                  </div>
+                  <div class="adhesion-section-content">
+                    <p class="adhesion-intro-text">
+                      Je souhaite adhérer à l’association Ensemble en Parisis et participer à ses actions.
+                    </p>
+
+                    <div class="adhesion-choices-row">
+                      <label class="adhesion-radio-label">
+                        <input type="radio" name="adh_type" value="premiere" checked class="adhesion-radio" />
+                        <span class="custom-square-check">■</span>
+                        <span>Première adhésion</span>
+                      </label>
+                      <label class="adhesion-radio-label">
+                        <input type="radio" name="adh_type" value="renouvellement" class="adhesion-radio" />
+                        <span class="custom-square-check">■</span>
+                        <span>Renouvellement</span>
+                      </label>
+                    </div>
+
+                    <div class="adhesion-cotisation-row">
+                      <div class="adhesion-cotisation-col">
+                        <div class="adhesion-cotisation-amount-wrap">
+                          <label class="adhesion-radio-label">
+                            <input type="radio" name="adh_cotisation_type" value="fixe" checked class="adhesion-radio" id="adh-cotisation-fixe-radio" onchange="document.getElementById('adh-cotisation').value = '15';" />
+                            <span class="custom-square-check">■</span>
+                            <span class="adhesion-label">Cotisation annuelle :</span>
+                          </label>
+                          <div class="adhesion-fixed-amount-pill">
+                            <span class="adhesion-fixed-val">15 €</span>
+                          </div>
+                        </div>
+
+                        <div class="adhesion-cotisation-amount-wrap adhesion-cotisation-libre-line">
+                          <label class="adhesion-radio-label">
+                            <input type="radio" name="adh_cotisation_type" value="libre" class="adhesion-radio" id="adh-cotisation-libre-radio" onchange="document.getElementById('adh-cotisation').value = document.getElementById('adh-cotisation-libre').value || '15';" />
+                            <span class="custom-square-check">■</span>
+                            <span class="adhesion-label">Cotisation montant libre :</span>
+                          </label>
+                          <div class="adhesion-amount-input-group">
+                            <input type="number" id="adh-cotisation-libre" name="cotisation_libre" class="adhesion-input adhesion-input-inline" placeholder="Montant" min="1" onfocus="document.getElementById('adh-cotisation-libre-radio').checked = true; if(this.value) document.getElementById('adh-cotisation').value = this.value;" oninput="document.getElementById('adh-cotisation-libre-radio').checked = true; document.getElementById('adh-cotisation').value = this.value || '15';" />
+                            <span class="adhesion-currency">€</span>
+                          </div>
+                        </div>
+                        <input type="hidden" id="adh-cotisation" name="cotisation" value="15" />
+                      </div>
+
+                      <div class="adhesion-payment-methods">
+                        <label class="adhesion-radio-label">
+                          <input type="radio" name="adh_reglement" value="especes" class="adhesion-radio" />
+                          <span class="custom-square-check">■</span>
+                          <span>Espèces</span>
+                        </label>
+                        <label class="adhesion-radio-label">
+                          <input type="radio" name="adh_reglement" value="cheque" class="adhesion-radio" />
+                          <span class="custom-square-check">■</span>
+                          <span>Chèque</span>
+                        </label>
+                        <label class="adhesion-radio-label">
+                          <input type="radio" name="adh_reglement" value="enligne" checked class="adhesion-radio" />
+                          <span class="custom-square-check">■</span>
+                          <span>Hello Asso</span>
+                        </label>
+                        <div class="adhesion-other-payment">
+                          <label class="adhesion-radio-label">
+                            <input type="radio" name="adh_reglement" value="autre" id="adh-reglement-autre-radio" class="adhesion-radio" />
+                            <span class="custom-square-check">■</span>
+                            <span>Autre :</span>
+                          </label>
+                          <input type="text" id="adh-reglement-autre" name="reglement_autre" class="adhesion-input adhesion-input-inline" placeholder="Précisez" onfocus="document.getElementById('adh-reglement-autre-radio').checked = true;" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- SECTION ③ : COMMENT SOUHAITEZ-VOUS PARTICIPER ? -->
+                <div class="adhesion-section-block">
+                  <div class="adhesion-section-header banner-purple">
+                    <span>③ COMMENT SOUHAITEZ-VOUS PARTICIPER ?</span>
+                  </div>
+                  <div class="adhesion-section-content">
+                    <div class="adhesion-participation-grid">
+                      <label class="adhesion-check-card">
+                        <input type="checkbox" name="participation" value="activites" class="adhesion-checkbox" checked />
+                        <span class="custom-square-box">■</span>
+                        <span class="participation-text">Participer aux activités</span>
+                      </label>
+                      <label class="adhesion-check-card">
+                        <input type="checkbox" name="participation" value="aide" class="adhesion-checkbox" checked />
+                        <span class="custom-square-box">■</span>
+                        <span class="participation-text">Donner un coup de main</span>
+                      </label>
+                      <label class="adhesion-check-card">
+                        <input type="checkbox" name="participation" value="projets" class="adhesion-checkbox" />
+                        <span class="custom-square-box">■</span>
+                        <span class="participation-text">Participer à des projets</span>
+                      </label>
+
+                      <!-- Action Proposer des idées avec ligne interactive -->
+                      <div class="adhesion-check-card-interactive full-span is-checked" id="card-part-idees">
+                        <label class="adhesion-check-header" for="adh-part-idees">
+                          <input type="checkbox" name="participation" value="idees" id="adh-part-idees" class="adhesion-checkbox" checked onchange="window.ui.togglePropositions(this.checked)" />
+                          <span class="custom-square-box">■</span>
+                          <span class="participation-text">Proposer des idées</span>
+                        </label>
+                        <div class="adhesion-propositions-row" id="adhesion-propositions-row">
+                          <div class="adhesion-prop-input-wrap">
+                            <label for="adh-propositions" class="adhesion-prop-label">Vos propositions :</label>
+                            <input type="text" id="adh-propositions" name="propositions" class="adhesion-input adhesion-prop-input" placeholder="Partagez vos idées (ex: ateliers partagés, aménagement d'espace vert, animations...)" onfocus="document.getElementById('adh-part-idees').checked = true; window.ui.togglePropositions(true);" oninput="document.getElementById('adh-part-idees').checked = true; window.ui.togglePropositions(true);" />
+                          </div>
+                          <div class="adhesion-prop-chips no-print">
+                            <span style="font-size: 0.75rem; color: var(--text-muted); align-self: center; margin-right: 0.25rem;">Suggestions :</span>
+                            <button type="button" class="prop-chip-btn" onclick="window.ui.appendProposition('Végétalisation & biodiversité')">+ 🌿 Végétalisation</button>
+                            <button type="button" class="prop-chip-btn" onclick="window.ui.appendProposition('Ateliers mobilités & vélo')">+ 🚲 Mobilités douces</button>
+                            <button type="button" class="prop-chip-btn" onclick="window.ui.appendProposition('Animations & débats citoyens')">+ 🎪 Débats citoyens</button>
+                            <button type="button" class="prop-chip-btn" onclick="window.ui.appendProposition('Solidarité & entraide')">+ 🤝 Solidarité locale</button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <label class="adhesion-check-card full-span">
+                        <input type="checkbox" name="participation" value="infos" class="adhesion-checkbox" checked />
+                        <span class="custom-square-box">■</span>
+                        <span class="participation-text">Être informé(e) des actions de l’association</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- SECTION ④ : VALIDATION -->
+                <div class="adhesion-section-block">
+                  <div class="adhesion-section-header banner-magenta">
+                    <span>④ VALIDATION</span>
+                  </div>
+                  <div class="adhesion-section-content">
+                    <div class="adhesion-grid-2" style="margin-bottom: 1.25rem;">
+                      <div class="adhesion-field-inline">
+                        <label for="adh-fait-a" class="adhesion-label">Fait à :</label>
+                        <input type="text" id="adh-fait-a" name="fait_a" class="adhesion-input" placeholder="Herblay-sur-Seine" required />
+                      </div>
+                      <div class="adhesion-field-inline">
+                        <label for="adh-fait-le" class="adhesion-label">Le :</label>
+                        <input type="text" id="adh-fait-le" name="fait_le" class="adhesion-input" placeholder="JJ / MM / AAAA" required />
+                      </div>
+                    </div>
+
+                    <div class="adhesion-signature-block">
+                      <div class="adhesion-signature-top">
+                        <label class="adhesion-label">Signature :</label>
+                        <div class="adhesion-sig-controls no-print">
+                          <button type="button" class="btn btn-ghost btn-xs" onclick="window.ui.clearAdhesionSignature()">
+                            🔄 Effacer le tracé
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="adhesion-canvas-container">
+                        <canvas id="adhesion-signature-pad" class="adhesion-signature-canvas" width="600" height="130" aria-label="Zone de signature manuscrite"></canvas>
+                        <div class="adhesion-signature-placeholder" id="adhesion-sig-hint">
+                          ✍️ Signez ici à la souris ou au doigt
+                        </div>
+                      </div>
+                      <div class="adhesion-signature-line"></div>
+                    </div>
+
+                    <!-- Mentions de remerciement et RGPD -->
+                    <div class="adhesion-sheet-footer">
+                      <p class="adhesion-thanks">
+                        Merci pour votre confiance et votre participation à la vie d’Ensemble en Parisis !
+                      </p>
+                      <p class="adhesion-rgpd">
+                        Les informations recueillies sont utilisées uniquement pour la gestion des adhésions et la vie de l’association.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Boutons d'action du formulaire interactif -->
+                <div class="adhesion-form-actions no-print">
+                  <button type="submit" class="btn btn-primary btn-lg adhesion-submit-btn">
+                    <span>🚀</span> Envoyer ma demande d'adhésion en ligne
+                  </button>
+                  <button type="button" class="btn btn-outline btn-lg" onclick="window.ui.printAdhesion(false)">
+                    <span>🖨️</span> Imprimer ma fiche
+                  </button>
+                  <button type="button" class="btn btn-ghost btn-sm" onclick="window.ui.resetAdhesionForm()">
+                    <span>🔄</span> Réinitialiser
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Bouton de bas de page pour replier rapidement -->
+            <div class="adhesion-bottom-close no-print">
+              <button class="btn btn-outline btn-sm" onclick="window.ui.toggleAdhesionSection(false); document.getElementById('adhesion-section')?.scrollIntoView({ behavior: 'smooth' });">
+                ▲ Replier la fiche d'adhésion
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -293,7 +604,7 @@
           <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
             <div>
               <div class="section-tag">Catalogue en temps réel</div>
-              <h2 class="section-title" style="margin-bottom: 0.5rem;">Où agir près de chez vous ?</h2>
+              <h2 class="section-title" style="margin-bottom: 0.5rem;">Nos actions</h2>
               <p class="section-description">Trouvez la mission qui correspond à vos disponibilités.</p>
             </div>
             <div id="results-count-badge" class="badge badge-env" style="font-size: 0.9rem; padding: 0.4rem 1rem;">
@@ -382,103 +693,6 @@
         </div>
       </div>
     </section>
-
-    <!-- ==========================================================================
-         SECTION 5: CARTE DU TERRITOIRE & TIERS-LIEUX
-         ========================================================================== -->
-    <section id="carte-section" class="section section-subtle">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">Géographie Solidaire</div>
-          <h2 class="section-title">Un territoire vivant & interconnecté</h2>
-          <p class="section-description">
-            Retrouvez les tiers-lieux, centres sociaux, jardins partagés et associations actives sur les 10 communes du Parisis.
-          </p>
-        </div>
-
-        <div style="background: #FFFFFF; border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 2rem; box-shadow: var(--shadow-md);">
-          <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1.5rem;">
-            <span class="badge badge-env">🌱 4 Jardins Partagés</span>
-            <span class="badge badge-solidarite">🍲 6 Centres Sociaux & Banques Alimentaires</span>
-            <span class="badge badge-citoyennete">🛠️ 3 Repair Cafés & Tiers-Lieux</span>
-            <span class="badge badge-education">📖 8 Médiathèques Partenaires</span>
-          </div>
-          <p style="text-align: center; color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0;">
-            💡 <em>Astuce : Utilisez la vue Carte du catalogue ci-dessus pour géolocaliser toutes les actions en temps réel !</em>
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         SECTION 6: DOUBLE BLOC CTA (HABITANTS VS ASSOCIATIONS)
-         ========================================================================== -->
-    <section id="partenaires-section" class="section">
-      <div class="container">
-        <div class="dual-cta-grid">
-          <!-- Carte Citoyen -->
-          <div class="cta-card cta-card-citizen">
-            <div>
-              <div class="cta-card-badge">🙋 Vous êtes un habitant ?</div>
-              <h3 class="cta-card-title">Donnez du sens à votre temps libre</h3>
-              <p class="cta-card-desc">
-                Que vous ayez 1 heure par mois ou une demi-journée par semaine, trouvez des actions proches de chez vous et faites de belles rencontres.
-              </p>
-              <div class="cta-card-features">
-                <div class="cta-feature-item">✓ Inscription en 2 clics sans engagement</div>
-                <div class="cta-feature-item">✓ Missions adaptées aux familles et débutants</div>
-                <div class="cta-feature-item">✓ Suivi de votre impact et badges citoyens</div>
-              </div>
-            </div>
-            <a href="#catalogue-section" class="btn btn-white btn-lg">
-              Trouver ma 1ère mission →
-            </a>
-          </div>
-
-          <!-- Carte Association -->
-          <div class="cta-card cta-card-asso">
-            <div>
-              <div class="cta-card-badge">🏢 Vous êtes une association ?</div>
-              <h3 class="cta-card-title">Fédérez vos futurs bénévoles</h3>
-              <p class="cta-card-desc">
-                Publiez vos besoins ponctuels ou récurrents, gagnez en visibilité auprès des citoyens du Parisis et gérez vos participants simplement.
-              </p>
-              <div class="cta-card-features">
-                <div class="cta-feature-item">✓ Dépôt d'annonces gratuit et instantané</div>
-                <div class="cta-feature-item">✓ Gestion des inscriptions & export d'émargement</div>
-                <div class="cta-feature-item">✓ Relais auprès de la communauté locale</div>
-              </div>
-            </div>
-            <button class="btn btn-white btn-lg" onclick="window.modals.openAssoDashboard()">
-              Accéder à l'Espace Association →
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- ==========================================================================
-         SECTION 8: NEWSLETTER LOCALE
-         ========================================================================== -->
-    <section class="section" style="padding-bottom: 0;">
-      <div class="container">
-        <div class="newsletter-box">
-          <div>
-            <h3 class="newsletter-title">Restez connecté(e) à la vie locale</h3>
-            <p class="newsletter-desc">
-              Recevez 1 fois tous les 15 jours notre sélection d'actions citoyennes, coups de main et événements près de chez vous. Garanti sans spam.
-            </p>
-          </div>
-          <form id="newsletter-form" class="newsletter-form">
-            <input type="email" id="newsletter-email" class="newsletter-input" placeholder="Votre adresse email..." required />
-            <button type="submit" class="btn btn-primary">
-              S'inscrire
-            </button>
-          </form>
-        </div>
-      </div>
-    </section>
   </main>
 
   <!-- ==========================================================================
@@ -535,7 +749,7 @@
             <a href="javascript:void(0)" onclick="window.modals.openProposeAction()" class="footer-link">Proposer une action</a>
             <a href="javascript:void(0)" onclick="window.modals.openAssoDashboard()" class="footer-link">Espace Association</a>
             <a href="javascript:void(0)" onclick="window.ui.showToast('Guide', 'Guide pratique du bénévole disponible en téléchargement', 'info')" class="footer-link">Guide de l'engagement</a>
-            <a href="javascript:void(0)" onclick="window.ui.showToast('Mairies', 'Contact partenariats : collectivites@ensemble-parisis.fr', 'info')" class="footer-link">Espace Collectivités</a>
+            <a href="mailto:ensembleenparisis@gmail.com" class="footer-link">Contact partenariats : ensembleenparisis@gmail.com</a>
           </div>
         </div>
 
@@ -543,11 +757,10 @@
         <div>
           <h4 class="footer-col-title">Ensemble en Parisis</h4>
           <div class="footer-links">
-            <a href="#statuts-section" onclick="window.ui.openStatuts(event)" class="footer-link">📜 Statuts de l'Association</a>
+            <a href="mailto:ensembleenparisis@gmail.com" class="footer-link" style="font-weight: 700; color: var(--primary);">ensembleenparisis@gmail.com</a>
+            <a href="#adhesion-section" onclick="window.ui.openAdhesion(event)" class="footer-link">Bulletin d'Adhésion</a>
+            <a href="#statuts-section" onclick="window.ui.openStatuts(event)" class="footer-link">Statuts de l'Association</a>
             <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')" class="footer-link">Charte éthique</a>
-            <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')" class="footer-link">Accessibilité (RGAA)</a>
-            <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')" class="footer-link">Protection des données (RGPD)</a>
-            <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')" class="footer-link">Mentions Légales</a>
           </div>
         </div>
       </div>
@@ -557,9 +770,9 @@
           © 2026 Ensemble en Parisis · Association Loi 1901 à but non lucratif.
         </div>
         <div class="footer-bottom-links">
+          <a href="mailto:ensembleenparisis@gmail.com">Contact (ensembleenparisis@gmail.com)</a>
+          <a href="#adhesion-section" onclick="window.ui.openAdhesion(event)">Bulletin d'adhésion</a>
           <a href="#statuts-section" onclick="window.ui.openStatuts(event)">Statuts officiels</a>
-          <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')">Conformité RGAA AA (98%)</a>
-          <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')">Confidentialité</a>
           <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')">Plan du site</a>
         </div>
       </div>
@@ -690,6 +903,37 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary" onclick="window.modals.closeAll()">J'ai compris</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. MODALE SUCCÈS ADHÉSION -->
+  <div id="modal-adhesion-success" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 class="modal-title">Demande d'adhésion confirmée</h3>
+          <span class="modal-subtitle">Association Ensemble en Parisis</span>
+        </div>
+        <button class="modal-close-btn" onclick="window.modals.closeAll()" aria-label="Fermer">✕</button>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- 9. MODALE LIGHTBOX AFFICHE PLEIN ÉCRAN -->
+  <div id="modal-image-lightbox" class="modal-backdrop lightbox-backdrop" role="dialog" aria-modal="true">
+    <div class="lightbox-dialog">
+      <div class="lightbox-header">
+        <h3 class="lightbox-title">Affiche officielle</h3>
+        <button class="modal-close-btn" onclick="window.modals.closeAll()" aria-label="Fermer">✕</button>
+      </div>
+      <div class="lightbox-body">
+        <img class="lightbox-img" src="photos/evenement-foret-herblaysienne-17-octobre.jpg" alt="Affiche de l'événement" />
+      </div>
+      <div class="lightbox-footer">
+        <a class="btn btn-outline btn-sm lightbox-download-link" href="photos/evenement-foret-herblaysienne-17-octobre.jpg" download="affiche-foret-herblaysienne-17-octobre.jpg" target="_blank">📥 Télécharger l'affiche</a>
+        <button class="btn btn-primary btn-sm lightbox-register-btn" onclick="window.modals.closeAll(); window.modals.openRegistration('act-foret-herblay');">Participer à la balade</button>
       </div>
     </div>
   </div>

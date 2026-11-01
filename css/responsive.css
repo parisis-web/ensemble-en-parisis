@@ -31,7 +31,7 @@
 /* --- TABLETTE (< 868px) --- */
 @media (max-width: 868px) {
   :root {
-    --header-height: 140px;
+    --header-height: 96px;
   }
 
   .main-nav {
@@ -120,8 +120,8 @@
 /* --- SMARTPHONE (< 640px) --- */
 @media (max-width: 640px) {
   .logo-img {
-    height: 120px;
-    max-width: min(100%, 480px);
+    height: 72px;
+    max-width: min(100%, 240px);
   }
 
   .hero-title {
@@ -256,6 +256,110 @@
 
   .signature-handwritten {
     font-size: 2rem;
+  }
+
+  /* Adhésion responsive */
+  .adhesion-header-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .adhesion-main-title {
+    font-size: 1.45rem;
+  }
+
+  .adhesion-toggle-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .adhesion-toggle-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.95rem;
+    padding: 0.8rem 1.2rem;
+  }
+
+  .adhesion-quick-info {
+    justify-content: center;
+    font-size: 0.82rem;
+  }
+
+  .adhesion-sheet-card {
+    padding: 1.5rem 1.15rem;
+  }
+
+  .adhesion-sheet-title {
+    font-size: 1.25rem;
+  }
+
+  .adhesion-sheet-subtitle {
+    font-size: 0.88rem;
+  }
+
+  .adhesion-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .adhesion-field-inline {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .adhesion-input {
+    width: 100%;
+  }
+
+  .adhesion-cotisation-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .adhesion-participation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .adhesion-form-actions .btn {
+    width: 100%;
+  }
+
+  /* Territoire responsive */
+  .territory-toolbar-card {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .territory-filter-pills {
+    justify-content: flex-start;
+  }
+
+  .territory-quick-actions {
+    width: 100%;
+  }
+
+  .territory-quick-actions .btn {
+    width: 100%;
+  }
+
+  .territory-map-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .territory-map-wrapper {
+    min-height: 380px;
+  }
+
+  .territory-leaflet-map {
+    min-height: 380px;
+    height: 380px;
+  }
+
+  .communes-cards-grid {
+    grid-template-columns: 1fr;
   }
 }
 

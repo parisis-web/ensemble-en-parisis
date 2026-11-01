@@ -33,8 +33,8 @@ const THEMES_DATA = {
     color: "#0284C7",
     bgColor: "#E0F2FE",
     textColor: "#0C4A6E",
-    desc: "Conseils de quartier, concertations, entraide entre voisins et aménagement participatif.",
-    count: 8
+    desc: "Conseils de quartier, concertations, balades de redécouverte de la nature et entraide locale.",
+    count: 9
   },
   education: {
     id: "education",
@@ -85,7 +85,191 @@ const COMMUNES_PARISIS = [
   "Pierrelaye"
 ];
 
+const COMMUNES_TERRITOIRE_DATA = [
+  {
+    id: "herblay",
+    name: "Herblay-sur-Seine",
+    codePostal: "95220",
+    population: "32 150 hab.",
+    coords: [48.9904, 2.1648],
+    icon: "🌊",
+    color: "#059669",
+    description: "Bordée par la Seine, ville dynamique accueillant le siège officiel de l'association Ensemble en Parisis et de multiples initiatives citoyennes.",
+    associationsCount: 42,
+    actionsCount: 7,
+    keySpots: ["Quai du Génie", "Jardin Partagé des Cailloux Gris", "Espace André Malraux", "Mairie d'Herblay"]
+  },
+  {
+    id: "cormeilles",
+    name: "Cormeilles-en-Parisis",
+    codePostal: "95240",
+    population: "25 400 hab.",
+    coords: [48.9735, 2.2023],
+    icon: "🌿",
+    color: "#7C3AED",
+    description: "Entre collines et carrières réaménagées, pôle culturel et éducatif très engagé dans l'inclusion numérique et la transition verte.",
+    associationsCount: 35,
+    actionsCount: 5,
+    keySpots: ["Médiathèque L'Éclipse", "Fort de Cormeilles", "Théâtre du Cormier", "Jardin des Saveurs"]
+  },
+  {
+    id: "franconville",
+    name: "Franconville",
+    codePostal: "95130",
+    population: "37 300 hab.",
+    coords: [48.9892, 2.2285],
+    icon: "🤝",
+    color: "#EA580C",
+    description: "Cœur urbain et solidaire du Parisis avec de fortes actions d'entraide de quartier, de banques alimentaires et de soutien aux aînés.",
+    associationsCount: 48,
+    actionsCount: 8,
+    keySpots: ["Centre Social Épine Guyon", "Espace Saint-Exupéry", "Parc Cadet de Vaux", "Maison de la Solidarité"]
+  },
+  {
+    id: "taverny",
+    name: "Taverny",
+    codePostal: "95150",
+    population: "27 100 hab.",
+    coords: [49.0270, 2.2270],
+    icon: "🛠️",
+    color: "#0284C7",
+    description: "Au pied de la forêt de Montmorency, moteur de l'économie circulaire avec son Repair Café réputé et ses ateliers de réemploi.",
+    associationsCount: 39,
+    actionsCount: 6,
+    keySpots: ["Repair Café & FabLab", "Médiathèque Les Temps Modernes", "Maison des Jeunes", "Porte de Forêt"]
+  },
+  {
+    id: "sannois",
+    name: "Sannois",
+    codePostal: "95110",
+    population: "26 500 hab.",
+    coords: [48.9715, 2.2575],
+    icon: "🏛️",
+    color: "#D97706",
+    description: "Commune historique dominée par son moulin, très active dans le lien intergénérationnel, les épiceries solidaires et la culture locale.",
+    associationsCount: 33,
+    actionsCount: 4,
+    keySpots: ["Maison de Quartier Gambetta", "Moulin de Sannois", "Centre Cyrano", "Jardin Pédagogique"]
+  },
+  {
+    id: "montigny",
+    name: "Montigny-lès-Cormeilles",
+    codePostal: "95370",
+    population: "22 200 hab.",
+    coords: [48.9950, 2.1960],
+    icon: "🌻",
+    color: "#16A34A",
+    description: "Territoire en pleine mutation urbaine et écologique, foisonnant de jardins familiaux et de collectifs jeunesse.",
+    associationsCount: 29,
+    actionsCount: 5,
+    keySpots: ["Centre Culturel Picasso", "Jardin Solidaire du Village", "Espace Nelson Mandela", "Maison de Quartier"]
+  },
+  {
+    id: "beauchamp",
+    name: "Beauchamp",
+    codePostal: "95250",
+    population: "8 900 hab.",
+    coords: [49.0145, 2.1905],
+    icon: "🏡",
+    color: "#E11D48",
+    description: "Ville à taille humaine avec un tissu associatif très soudé, axé sur la solidarité de proximité et la biodiversité.",
+    associationsCount: 18,
+    actionsCount: 3,
+    keySpots: ["Maison des Jeunes & de la Culture", "Salle des Fêtes", "Jardin de la Mairie"]
+  },
+  {
+    id: "saint-leu",
+    name: "Saint-Leu-la-Forêt",
+    codePostal: "95320",
+    population: "16 200 hab.",
+    coords: [49.0180, 2.2470],
+    icon: "🌲",
+    color: "#059669",
+    description: "Cadre préservé et résidentiel au riche patrimoine artistique, développant des projets d'éco-mobilité et d'artisanat solidaire.",
+    associationsCount: 25,
+    actionsCount: 4,
+    keySpots: ["Maison Pour Tous", "Espace Clairefontaine", "Sentiers de Forêt"]
+  },
+  {
+    id: "bessancourt",
+    name: "Bessancourt",
+    codePostal: "95550",
+    population: "8 100 hab.",
+    coords: [49.0380, 2.2180],
+    icon: "🌱",
+    color: "#16A34A",
+    description: "Pionnière de la transition écologique avec son éco-quartier exemplaire et ses initiatives d'agriculture urbaine.",
+    associationsCount: 17,
+    actionsCount: 3,
+    keySpots: ["Éco-Quartier des Meuniers", "Espace Bérenger", "Verger Citoyen"]
+  },
+  {
+    id: "pierrelaye",
+    name: "Pierrelaye",
+    codePostal: "95480",
+    population: "9 700 hab.",
+    coords: [49.0220, 2.1520],
+    icon: "🌳",
+    color: "#0284C7",
+    description: "Aux portes de la future forêt de Maubuisson, carrefour de projets d'inclusion par le sport et de renaturation.",
+    associationsCount: 20,
+    actionsCount: 3,
+    keySpots: ["Centre Social Georges Brassens", "Parc des Sports", "Maison de la Plaine"]
+  }
+];
+
+const TERRITOIRE_HUBS_DATA = [
+  // Jardins Partagés & Écologie
+  { id: "hub-1", name: "Jardin Partagé des Cailloux Gris", commune: "Herblay-sur-Seine", type: "jardin", icon: "🌱", coords: [48.9920, 2.1580], desc: "Potager collectif, permaculture et compostage partagé." },
+  { id: "hub-2", name: "Jardin Solidaire du Village", commune: "Montigny-lès-Cormeilles", type: "jardin", icon: "🌱", coords: [48.9965, 2.1930], desc: "Production locale redistribuée aux habitants et ateliers pédagogiques." },
+  { id: "hub-3", name: "Verger Citoyen & Ruches", commune: "Bessancourt", type: "jardin", icon: "🍎", coords: [49.0390, 2.2150], desc: "Arbres fruitiers partagés et initiation à l'apiculture." },
+  { id: "hub-4", name: "Quai du Génie - Éco-Berges", commune: "Herblay-sur-Seine", type: "jardin", icon: "🌊", coords: [48.9868, 2.1554], desc: "Point de ralliement des ramassages citoyens le long de la Seine." },
+
+  // Solidarité & Centres Sociaux
+  { id: "hub-5", name: "Centre Social Épine Guyon", commune: "Franconville", type: "solidarite", icon: "🍲", coords: [48.9892, 2.2285], desc: "Distribution alimentaire, épicerie sociale et aide aux démarches." },
+  { id: "hub-6", name: "Maison de Quartier Gambetta", commune: "Sannois", type: "solidarite", icon: "🤝", coords: [48.9715, 2.2575], desc: "Accueil de jour, écrivain public et permanences bénévoles." },
+  { id: "hub-7", name: "Centre Social Georges Brassens", commune: "Pierrelaye", type: "solidarite", icon: "🤝", coords: [49.0220, 2.1520], desc: "Activités familiales, soutien à la parentalité et entraide." },
+
+  // Tiers-Lieux & Repair Cafés
+  { id: "hub-8", name: "Repair Café & FabLab Parisis", commune: "Taverny", type: "tiers-lieu", icon: "🛠️", coords: [49.0260, 2.2250], desc: "Ateliers de réparation d'électroménager, vélo et impression 3D." },
+  { id: "hub-9", name: "MJC / Espace Coopératif", commune: "Beauchamp", type: "tiers-lieu", icon: "🎨", coords: [49.0145, 2.1905], desc: "Espace de coworking citoyen, bricolage et scène ouverte." },
+  { id: "hub-10", name: "Maison Pour Tous Saint-Leu", commune: "Saint-Leu-la-Forêt", type: "tiers-lieu", icon: "🏠", coords: [49.0180, 2.2470], desc: "Tiers-lieu intergénérationnel et ateliers de transmission de savoirs." },
+
+  // Médiathèques & Éducation
+  { id: "hub-11", name: "Médiathèque L'Éclipse", commune: "Cormeilles-en-Parisis", type: "education", icon: "📖", coords: [48.9735, 2.2023], desc: "Ateliers robotique, soutien scolaire et club de lecture solidaire." },
+  { id: "hub-12", name: "Médiathèque Les Temps Modernes", commune: "Taverny", type: "education", icon: "📚", coords: [49.0280, 2.2290], desc: "Espace numérique inclusif et grainothèque citoyenne." },
+
+  // Mairies & Siège Associatif
+  { id: "hub-13", name: "Siège Ensemble en Parisis", commune: "Herblay-sur-Seine", type: "mairie", icon: "🏛️", coords: [48.9930, 2.1620], desc: "Siège officiel de l'association (151 av. de la Chesnaie) et permanences." },
+  { id: "hub-14", name: "Hôtel de Ville & Maison des Asso", commune: "Franconville", type: "mairie", icon: "🏛️", coords: [48.9880, 2.2310], desc: "Hôtel de Ville et guichet associatif de Franconville." },
+  { id: "hub-15", name: "Esplanade des Frères Lumière (Départ Balade)", commune: "Herblay-sur-Seine", type: "jardin", icon: "🌲", coords: [48.9875, 2.1570], desc: "Point de départ de la balade citoyenne 'Redécouverte de la Forêt Herblaysienne' avec Hugues Verdière." }
+];
+
 const INITIAL_ACTIONS = [
+  {
+    id: "act-foret-herblay",
+    title: "Redécouverte de la Forêt Herblaysienne : Comment concilier ville et nature ?",
+    theme: "citoyennete",
+    type: "evenement",
+    association: "Ensemble en Parisis",
+    associationLogo: "🌲",
+    commune: "Herblay-sur-Seine",
+    address: "Esplanade des Frères Lumière (Rendez-vous à 10h)",
+    date: "Samedi 17 Octobre 2026",
+    rawDate: "2026-10-17",
+    time: "10h00 - 12h00 (2h)",
+    spotsTotal: 25,
+    spotsTaken: 11,
+    isUrgent: false,
+    isWeekend: true,
+    isFeatured: true,
+    image: "photos/evenement-foret-herblaysienne-17-octobre.jpg",
+    description: "Comment concilier ville et nature ? Venez participer à cette balade citoyenne et conviviale de 4 km guidée par Hugues Verdière, Forestier herblaysien. Au programme : Histoire de la forêt de Maubuisson, pourquoi plante-t-on des arbres, et les enjeux de l'île d'Herblay. Fin du parcours au Bois des Fontaines après un passage par les bords de Seine. Événement gratuit organisé par Ensemble en Parisis (25 places max).",
+    requirements: "Événement gratuit sur inscription obligatoire (ensembleenparisis@gmail.com). Durée : 2h | Distance : 4km | 25 personnes max. Une voiture sera disponible au Passeur pour les personnes ne désirant pas faire la montée. ⚠️ Balade non conseillée pour les personnes à mobilité réduite.",
+    accessibility: ["Événement gratuit", "Balade nature (4km)", "Familles & Citoyens", "Voiture relais au Passeur"],
+    coords: [48.9875, 2.1570],
+    tags: ["#ForêtHerblaysienne", "#VieLocale", "#NatureEnVille", "#HuguesVerdière", "#Herblay", "#Maubuisson"]
+  },
   {
     id: "act-1",
     title: "Grand Nettoyage d'Automne des Berges de Seine",

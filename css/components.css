@@ -92,8 +92,8 @@
 }
 
 .logo-img {
-  height: 156px;
-  max-width: 660px;
+  height: 100px;
+  max-width: 320px;
   width: auto;
   object-fit: contain;
   border-radius: var(--radius-sm);
@@ -105,8 +105,8 @@
 }
 
 .footer-logo-img {
-  height: 174px;
-  max-width: 720px;
+  height: 120px;
+  max-width: 380px;
 }
 
 .logo-icon {
@@ -521,14 +521,20 @@
 .theme-card-title {
   font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   color: var(--text-main);
+  transition: color var(--transition-fast);
+}
+
+.theme-card:hover .theme-card-title {
+  color: var(--primary);
 }
 
 .theme-card-desc {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
   color: var(--text-muted);
-  margin-bottom: 1.25rem;
+  margin-bottom: 0;
   flex-grow: 1;
 }
 
@@ -683,11 +689,17 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top;
   transition: transform 0.5s ease;
 }
 
 .action-card:hover .action-card-img {
   transform: scale(1.06);
+}
+
+.action-card-featured {
+  border-color: #0284C7;
+  box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.15), 0 8px 10px -6px rgba(2, 132, 199, 0.1);
 }
 
 .action-header-badges {
@@ -699,6 +711,29 @@
   justify-content: space-between;
   align-items: flex-start;
   z-index: 2;
+}
+
+.action-poster-badge {
+  background: rgba(15, 23, 42, 0.82);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.action-poster-badge:hover {
+  background: #0284C7;
+  color: #FFFFFF;
+  transform: scale(1.06);
 }
 
 .action-favorite-btn {
@@ -1092,6 +1127,38 @@
 
 .hero-badges-wrapper .hero-badge-tag {
   margin-bottom: 0;
+}
+
+.badge-adhesion {
+  background: #EDE9FE;
+  color: #6D28D9;
+  border: 1px solid #C4B5FD;
+}
+
+.hero-badge-adhesion {
+  text-decoration: none;
+  background: var(--bg-surface);
+  border-color: #DDD6FE;
+  color: #6D28D9;
+  transition: all var(--transition-fast);
+}
+
+.hero-badge-adhesion:hover {
+  background: #EDE9FE;
+  color: #5B21B6;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Onglet Adhésion dans la barre de navigation */
+.nav-link-adhesion {
+  border: 1px solid transparent;
+}
+
+.nav-link-adhesion:hover {
+  border-color: #DDD6FE;
+  background: #EDE9FE;
+  color: #6D28D9;
 }
 
 .hero-badge-statuts {
@@ -1666,11 +1733,1263 @@
   margin-top: 2rem;
 }
 
-/* Media Print pour l'export PDF / Impression des statuts */
+/* ==========================================================================
+   SECTION BULLETIN D'ADHÉSION OFFICIEL - VOLET DÉPLIABLE & FORMULAIRE IMPRIMABLE
+   ========================================================================== */
+
+.adhesion-section {
+  padding: 3.5rem 0;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FAF5FF 50%, var(--bg-main) 100%);
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.adhesion-header-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 2.25rem 2.5rem;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.adhesion-header-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #7C3AED 0%, #A855F7 50%, #EC4899 100%);
+}
+
+.adhesion-header-card.is-expanded {
+  border-color: #A855F7;
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.12);
+}
+
+.adhesion-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.adhesion-badge-group {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.adhesion-actions-top {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.adhesion-title-row {
+  margin-bottom: 1.5rem;
+}
+
+.adhesion-main-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 0.65rem;
+  letter-spacing: -0.02em;
+}
+
+.adhesion-main-desc {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 950px;
+  margin-bottom: 0;
+}
+
+.adhesion-toggle-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.adhesion-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.85rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  background: linear-gradient(135deg, #7C3AED 0%, #9333EA 100%);
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.35);
+  transition: all var(--transition-fast);
+}
+
+.adhesion-toggle-btn:hover {
+  background: linear-gradient(135deg, #6D28D9 0%, #7E22CE 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.45);
+}
+
+.adhesion-toggle-btn.is-active {
+  background: #4C1D95;
+  color: #FFFFFF;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.adhesion-toggle-btn.is-active:hover {
+  background: #3B0764;
+}
+
+.adhesion-toggle-chevron {
+  font-size: 0.85rem;
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.adhesion-toggle-btn.is-active .adhesion-toggle-chevron {
+  transform: rotate(180deg);
+}
+
+.adhesion-quick-info {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.adhesion-info-pill {
+  background: var(--bg-subtle);
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+}
+
+.adhesion-info-dot {
+  color: var(--border-light);
+  font-weight: 900;
+}
+
+/* Volet déroulant de l'adhésion */
+.adhesion-collapsible-wrapper {
+  margin-top: 2rem;
+  animation: fadeInDown 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.adhesion-sheet-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Reproduction de la Fiche d'Adhésion Officielle (Sheet) */
+.adhesion-sheet-card {
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 10px 35px -5px rgba(15, 23, 42, 0.1), 0 0 0 1px rgba(124, 58, 237, 0.08);
+  width: 100%;
+  max-width: 860px;
+  padding: 2.75rem 3.25rem;
+  position: relative;
+}
+
+.adhesion-sheet-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 2px solid #F1F5F9;
+}
+
+.adhesion-sheet-logo {
+  max-height: 70px;
+  margin: 0 auto 1rem auto;
+  object-fit: contain;
+}
+
+.adhesion-sheet-title {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #0F172A;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+
+.adhesion-sheet-subtitle {
+  font-size: 1.02rem;
+  font-weight: 500;
+  color: #380B5C;
+  font-style: italic;
+  margin-bottom: 0;
+}
+
+/* Blocs de section */
+.adhesion-section-block {
+  margin-bottom: 1.65rem;
+}
+
+.adhesion-section-header {
+  padding: 0.5rem 1rem;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #FFFFFF;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+}
+
+.adhesion-section-header.banner-purple {
+  background: #3B0764;
+}
+
+.adhesion-section-header.banner-magenta {
+  background: linear-gradient(90deg, #7C3AED 0%, #A855F7 100%);
+}
+
+.adhesion-section-content {
+  padding: 0.25rem 0.5rem;
+}
+
+/* Grille et champs */
+.adhesion-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.adhesion-field-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.adhesion-field-inline.full-width {
+  margin-bottom: 1rem;
+}
+
+.adhesion-label {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: #1E293B;
+  white-space: nowrap;
+}
+
+.adhesion-input {
+  flex: 1;
+  border: none;
+  border-bottom: 1.5px solid #CBD5E1;
+  background: rgba(248, 250, 252, 0.6);
+  padding: 0.4rem 0.65rem;
+  font-size: 0.95rem;
+  color: #0F172A;
+  border-radius: 4px 4px 0 0;
+  transition: all var(--transition-fast);
+}
+
+.adhesion-input:focus {
+  background: #FFFFFF;
+  border-bottom-color: #7C3AED;
+  box-shadow: 0 2px 0 0 #7C3AED;
+}
+
+.adhesion-input-sm {
+  max-width: 90px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.adhesion-input-inline {
+  max-width: 140px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+.adhesion-intro-text {
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #1E293B;
+  margin-bottom: 1rem;
+}
+
+.adhesion-choices-row {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.adhesion-radio-label,
+.adhesion-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1E293B;
+  cursor: pointer;
+  user-select: none;
+}
+
+.adhesion-radio {
+  display: none;
+}
+
+.custom-square-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #64748B;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  color: transparent;
+  background: #FFFFFF;
+  transition: all var(--transition-fast);
+}
+
+.adhesion-radio:checked + .custom-square-check {
+  background: #7C3AED;
+  border-color: #7C3AED;
+  color: #FFFFFF;
+}
+
+.adhesion-cotisation-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  background: #FAF5FF;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid #EDE9FE;
+}
+
+.adhesion-cotisation-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.adhesion-cotisation-amount-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.adhesion-cotisation-libre-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.adhesion-fixed-amount-pill {
+  display: inline-flex;
+  align-items: center;
+  background: #EDE9FE;
+  color: #6D28D9;
+  border: 1.5px solid #DDD6FE;
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-full);
+  font-weight: 800;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.adhesion-amount-input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.adhesion-currency {
+  font-weight: 700;
+  color: #7C3AED;
+  font-size: 1.1rem;
+}
+
+.adhesion-quick-amounts {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.amount-btn {
+  background: #FFFFFF;
+  border: 1px solid #DDD6FE;
+  color: #6D28D9;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.amount-btn:hover,
+.amount-btn.active {
+  background: #7C3AED;
+  color: #FFFFFF;
+  border-color: #7C3AED;
+}
+
+.adhesion-payment-methods {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.adhesion-other-payment {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Participation */
+.adhesion-participation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.85rem;
+}
+
+.adhesion-check-card {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 0.85rem;
+  background: #FAF8F5;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  user-select: none;
+  transition: all var(--transition-fast);
+}
+
+.adhesion-check-card.full-span {
+  grid-column: 1 / -1;
+}
+
+.adhesion-check-card:hover {
+  background: #FFFFFF;
+  border-color: #C4B5FD;
+  box-shadow: var(--shadow-xs);
+}
+
+.adhesion-checkbox {
+  display: none;
+}
+
+.custom-square-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #64748B;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  color: transparent;
+  background: #FFFFFF;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.adhesion-checkbox:checked + .custom-square-box {
+  background: #7C3AED;
+  border-color: #7C3AED;
+  color: #FFFFFF;
+}
+
+.adhesion-checkbox:checked ~ .participation-text {
+  font-weight: 700;
+  color: #4C1D95;
+}
+
+.participation-text {
+  font-size: 0.92rem;
+  color: #1E293B;
+  font-weight: 500;
+}
+
+/* Carte interactive avec propositions */
+.adhesion-check-card-interactive {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 0.85rem 1rem;
+  background: #FAF8F5;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.adhesion-check-card-interactive.full-span {
+  grid-column: 1 / -1;
+}
+
+.adhesion-check-card-interactive.is-checked {
+  background: #FAF5FF;
+  border-color: #C4B5FD;
+  box-shadow: 0 2px 6px rgba(124, 58, 237, 0.08);
+}
+
+.adhesion-check-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.adhesion-propositions-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding-top: 0.65rem;
+  border-top: 1px dashed #DDD6FE;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.adhesion-propositions-row.is-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.adhesion-prop-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.adhesion-prop-label {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #6D28D9;
+  white-space: nowrap;
+}
+
+.adhesion-prop-input {
+  flex: 1;
+  min-width: 260px;
+  background: #FFFFFF !important;
+  border: 1.5px solid #DDD6FE !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 0.4rem 0.75rem !important;
+  font-size: 0.92rem;
+  color: #1E293B;
+  transition: all var(--transition-fast);
+}
+
+.adhesion-prop-input:focus {
+  border-color: #7C3AED !important;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15) !important;
+  outline: none;
+}
+
+.adhesion-prop-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  padding-left: 0.2rem;
+}
+
+.prop-chip-btn {
+  background: #EDE9FE;
+  border: 1px solid #DDD6FE;
+  color: #6D28D9;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.prop-chip-btn:hover {
+  background: #7C3AED;
+  color: #FFFFFF;
+  border-color: #7C3AED;
+  transform: translateY(-1px);
+}
+
+/* Signature & Validation */
+.adhesion-signature-block {
+  margin-top: 1rem;
+}
+
+.adhesion-signature-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.adhesion-canvas-container {
+  position: relative;
+  border: 1.5px dashed #CBD5E1;
+  border-radius: var(--radius-md);
+  background: #FAF9F6;
+  height: 130px;
+  cursor: crosshair;
+}
+
+.adhesion-signature-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+.adhesion-signature-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.88rem;
+  color: #94A3B8;
+  pointer-events: none;
+  user-select: none;
+}
+
+.adhesion-signature-line {
+  border-bottom: 1px solid #CBD5E1;
+  margin-top: 0.5rem;
+}
+
+.adhesion-sheet-footer {
+  text-align: center;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #F1F5F9;
+}
+
+.adhesion-thanks {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #380B5C;
+  margin-bottom: 0.35rem;
+}
+
+.adhesion-rgpd {
+  font-size: 0.78rem;
+  color: #64748B;
+  margin-bottom: 0;
+}
+
+/* Boutons d'action */
+.adhesion-form-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.adhesion-submit-btn {
+  background: linear-gradient(135deg, #7C3AED 0%, #9333EA 100%);
+  border: none;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.35);
+}
+
+.adhesion-submit-btn:hover {
+  background: linear-gradient(135deg, #6D28D9 0%, #7E22CE 100%);
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.45);
+}
+
+.adhesion-bottom-close {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+/* Carte de prévisualisation dans la modale de succès */
+.adhesion-card-badge-preview {
+  background: linear-gradient(135deg, #FAF5FF 0%, #FFFFFF 100%);
+  border: 1px solid #DDD6FE;
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  text-align: left;
+  box-shadow: var(--shadow-sm);
+  margin-top: 1rem;
+}
+
+.adhesion-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid #EDE9FE;
+}
+
+/* ==========================================================================
+   SECTION CARTE DU TERRITOIRE & COMMUNES DU PARISIS
+   ========================================================================== */
+
+.nav-link-carte {
+  border: 1px solid transparent;
+}
+
+.nav-link-carte:hover {
+  border-color: #BAE6FD;
+  background: #E0F2FE;
+  color: #0284C7;
+}
+
+.nav-link-contact {
+  border: 1px solid transparent;
+}
+
+.nav-link-contact:hover {
+  border-color: #FED7AA;
+  background: #FFEDD5;
+  color: #C2410C;
+}
+
+/* Barre d'outils et de filtres */
+.territory-toolbar-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.territory-filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.territory-filter-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-right: 0.25rem;
+}
+
+.territory-hub-filter-btn {
+  background: var(--bg-subtle);
+  color: var(--text-main);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.territory-hub-filter-btn:hover {
+  background: #FFFFFF;
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.territory-hub-filter-btn.active {
+  background: var(--primary);
+  color: #FFFFFF;
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
+}
+
+/* Disposition principale carte + panneau */
+.territory-map-layout {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.territory-map-wrapper {
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  min-height: 560px;
+}
+
+.territory-leaflet-map {
+  width: 100%;
+  height: 100%;
+  min-height: 560px;
+  z-index: 10;
+}
+
+.territory-map-legend {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  z-index: 400;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Marqueurs personnalisés communes & hubs */
+.commune-pin-bubble {
+  background: #FFFFFF;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--primary);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.commune-pin-bubble:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25);
+  z-index: 999;
+}
+
+.commune-map-marker.is-selected .commune-pin-bubble {
+  border-width: 3px;
+  box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.35), 0 8px 22px rgba(0, 0, 0, 0.25);
+  transform: scale(1.06);
+}
+
+.commune-pin-icon {
+  font-size: 1.1rem;
+}
+
+.commune-pin-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.commune-pin-name {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.commune-pin-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  padding: 0.05rem 0.3rem;
+  margin-top: 0.1rem;
+}
+
+/* Hub pins */
+.hub-pin-inner {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 14px;
+  border: 2px solid #FFFFFF;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.hub-pin-inner:hover {
+  transform: scale(1.25);
+}
+
+/* Hub popup */
+.hub-popup-content {
+  font-family: var(--font-body);
+  min-width: 220px;
+  padding: 4px;
+}
+
+.hub-popup-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.hub-popup-icon {
+  font-size: 1.4rem;
+}
+
+.hub-popup-title {
+  font-size: 0.88rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--text-main);
+}
+
+.hub-popup-commune {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.hub-popup-desc {
+  font-size: 0.82rem;
+  color: #475569;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+/* Panneau latéral de la commune */
+.commune-info-panel {
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+}
+
+.commune-panel-default {
+  text-align: center;
+  padding: 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+}
+
+.commune-panel-icon-hero {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+}
+
+.commune-panel-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 0.4rem;
+}
+
+.commune-panel-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.commune-panel-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.commune-stat-box {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.commune-stat-num {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.commune-stat-lbl {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.commune-panel-hint {
+  font-size: 0.85rem;
+  color: #475569;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-md);
+}
+
+/* Panneau Actif Commune */
+.commune-panel-active {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.commune-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.commune-panel-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.commune-panel-badge-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.commune-panel-sub {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.commune-panel-stats-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.commune-mini-stat {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8rem;
+  color: var(--text-main);
+}
+
+.commune-mini-stat strong {
+  color: var(--primary);
+}
+
+.commune-panel-hubs-section {
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.commune-hubs-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.65rem;
+}
+
+.commune-hubs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-height: 190px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.commune-hub-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.commune-hub-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.commune-panel-cta-wrap {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-light);
+}
+
+/* Grille de découverte des communes */
+.communes-grid-section {
+  margin-top: 3.5rem;
+}
+
+.communes-grid-header {
+  margin-bottom: 1.5rem;
+}
+
+.communes-grid-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 0.25rem;
+}
+
+.communes-grid-sub {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.communes-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.commune-discover-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+}
+
+.commune-discover-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary);
+}
+
+.commune-discover-card.is-active {
+  border-color: var(--primary);
+  background: #FAFDFB;
+  box-shadow: 0 0 0 2px var(--primary-light), var(--shadow-md);
+}
+
+.commune-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.commune-card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.commune-card-name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.4rem;
+}
+
+.commune-card-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.commune-card-spots {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.75rem;
+  color: #64748B;
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.commune-spot-pill {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.commune-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-light);
+}
+
+/* Media Print pour l'export PDF / Impression des statuts & adhésions */
 @media print {
   body {
     background: #FFFFFF !important;
     color: #000000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   .main-header,
@@ -1687,10 +3006,83 @@
   .statuts-controls-bar,
   .statuts-copy-btn,
   .statuts-bottom-close,
+  .adhesion-header-card,
+  .adhesion-form-actions,
+  .adhesion-bottom-close,
+  .no-print,
   .skip-link {
     display: none !important;
   }
 
+  body:not(.is-printing-statuts) .statuts-section {
+    display: none !important;
+  }
+
+  body:not(.is-printing-adhesion) .adhesion-section {
+    display: none !important;
+  }
+
+  /* Rendu d'impression spécifique Fiche d'Adhésion */
+  .adhesion-section {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: none !important;
+    border: none !important;
+  }
+
+  .adhesion-collapsible-wrapper {
+    display: block !important;
+    margin-top: 0 !important;
+  }
+
+  .adhesion-sheet-card {
+    box-shadow: none !important;
+    border: 1.5px solid #000000 !important;
+    border-radius: 6px !important;
+    max-width: 100% !important;
+    padding: 1.5rem !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  .adhesion-section-header.banner-purple {
+    background: #3B0764 !important;
+    color: #FFFFFF !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .adhesion-section-header.banner-magenta {
+    background: #7C3AED !important;
+    color: #FFFFFF !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .adhesion-input {
+    background: transparent !important;
+    border-bottom: 1px solid #000000 !important;
+  }
+
+  .adhesion-check-card,
+  .adhesion-check-card-interactive {
+    background: transparent !important;
+    border: 1px solid #CCCCCC !important;
+  }
+
+  .adhesion-prop-input {
+    border: none !important;
+    border-bottom: 1px solid #000000 !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+  }
+
+  .adhesion-prop-chips {
+    display: none !important;
+  }
+
+  /* Rendu d'impression spécifique Statuts */
   .statuts-section {
     padding: 0 !important;
     border: none !important;

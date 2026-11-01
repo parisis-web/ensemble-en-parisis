@@ -36,7 +36,8 @@ class AppState {
       const stored = localStorage.getItem(this.STORAGE_KEY_ACTIONS);
       if (stored) {
         const parsed = JSON.parse(stored);
-        return [...INITIAL_ACTIONS, ...parsed];
+        const customOnly = parsed.filter(p => !INITIAL_ACTIONS.some(init => init.id === p.id));
+        return [...INITIAL_ACTIONS, ...customOnly];
       }
     } catch (e) {
       console.warn("Erreur chargement actions localStorage", e);
@@ -177,7 +178,11 @@ class AppState {
 
       // 4. Filtre type
       if (this.filters.type && this.filters.type !== "all") {
-        if (action.type !== this.filters.type) return false;
+        if (this.filters.type === "atelier") {
+          if (action.type !== "atelier" && action.type !== "evenement") return false;
+        } else if (action.type !== this.filters.type) {
+          return false;
+        }
       }
 
       // 5. Filtre disponibilité
@@ -188,6 +193,31 @@ class AppState {
 
       return true;
     });
+  }
+
+  // Gestion des adhésions
+  saveMembership(membershipData) {
+    try {
+      localStorage.setItem("ensemble_parisis_membership", JSON.stringify(membershipData));
+      if (this.user) {
+        this.user.isMember = true;
+        this.user.membershipDate = new Date().toISOString();
+        this.saveUser();
+      }
+    } catch (e) {
+      console.warn("Erreur sauvegarde adhésion", e);
+    }
+    this.notify();
+  }
+
+  getMembership() {
+    try {
+      const stored = localStorage.getItem("ensemble_parisis_membership");
+      if (stored) return JSON.parse(stored);
+    } catch (e) {
+      console.warn("Erreur lecture adhésion", e);
+    }
+    return null;
   }
 
   // Système d'écoute et d'événements

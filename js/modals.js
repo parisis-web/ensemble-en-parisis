@@ -36,31 +36,52 @@ class ModalManager {
     const modal = document.getElementById("modal-action-details");
     const theme = THEMES_DATA[action.theme] || THEMES_DATA.env;
     const spotsLeft = action.spotsTotal - action.spotsTaken;
+    const isPoster = action.image.includes("evenement") || action.image.includes("foret");
 
     modal.querySelector(".modal-title").textContent = action.title;
     modal.querySelector(".modal-subtitle").textContent = `${action.association} · 📍 ${action.commune}`;
 
     const body = modal.querySelector(".modal-body");
     body.innerHTML = `
-      <div style="margin-bottom: 1.5rem; border-radius: var(--radius-md); overflow: hidden; height: 240px;">
-        <img src="${action.image}" alt="${action.title}" style="width: 100%; height: 100%; object-fit: cover;" />
+      <div style="margin-bottom: 1.5rem; border-radius: var(--radius-md); overflow: hidden; ${isPoster ? 'max-height: 380px; background: #0F172A; text-align: center;' : 'height: 240px;'} position: relative; cursor: pointer;" onclick="window.modals.openImageLightbox('${action.image}', '${action.title.replace(/'/g, "\\'")}')" title="Cliquer pour afficher l'affiche en plein écran">
+        <img src="${action.image}" alt="${action.title}" style="${isPoster ? 'max-height: 380px; width: auto; max-width: 100%; display: block; margin: 0 auto;' : 'width: 100%; height: 100%; object-fit: cover;'}" />
+        <span style="position: absolute; bottom: 12px; right: 12px; background: rgba(15, 23, 42, 0.8); color: #FFFFFF; font-size: 0.78rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; backdrop-filter: blur(4px); display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
+          🔍 Agrandir l'affiche
+        </span>
       </div>
 
       <div style="display: flex; gap: 8px; margin-bottom: 1.25rem; flex-wrap: wrap;">
         <span class="badge badge-${action.theme}">${theme.icon} ${theme.name}</span>
         <span class="badge" style="background: var(--bg-subtle); color: var(--text-main);">📍 ${action.commune}</span>
-        <span class="badge badge-urgent">${spotsLeft} place${spotsLeft > 1 ? "s" : ""} restante${spotsLeft > 1 ? "s" : ""}</span>
+        ${action.type === "evenement" ? `<span class="badge" style="background: #FDF2F8; color: #BE185D; border: 1px solid #FBCFE8; font-weight: 700;">🎉 Événement Gratuit</span>` : ""}
+        <span class="badge badge-urgent">${spotsLeft} place${spotsLeft > 1 ? "s" : ""} restante${spotsLeft > 1 ? "s" : ""} (sur ${action.spotsTotal})</span>
       </div>
 
-      <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Description de la mission</h4>
+      <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Description de l'événement</h4>
       <p style="color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.6;">${action.description}</p>
 
+      ${action.id === "act-foret-herblay" ? `
+        <div style="background: #F0FDF4; border: 1px solid #BBF7D0; padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+          <h4 style="font-size: 1rem; color: #166534; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px;">
+            <span>🌲</span> Au programme de la balade citoyenne
+          </h4>
+          <ul style="margin: 0; padding-left: 1.25rem; color: #14532D; font-size: 0.92rem; line-height: 1.6;">
+            <li><strong>Histoire de la forêt de Maubuisson :</strong> comprendre les racines et l'évolution de ce poumon vert.</li>
+            <li><strong>Pourquoi plante-t-on des arbres ?</strong> Les bienfaits écologiques et climatiques expliqués par un professionnel.</li>
+            <li><strong>Les enjeux de l'île d'Herblay :</strong> préservation de la biodiversité en bord de Seine.</li>
+            <li><strong>Guidé par Hugues Verdière :</strong> forestier herblaysien passionné.</li>
+          </ul>
+        </div>
+      ` : ""}
+
       <div style="background: var(--bg-subtle); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
-        <h4 style="font-size: 1rem; margin-bottom: 0.75rem;">Informations pratiques</h4>
+        <h4 style="font-size: 1rem; margin-bottom: 0.75rem;">Informations pratiques & Accès</h4>
         <p style="margin-bottom: 0.4rem;">📅 <strong>Date :</strong> ${action.date}</p>
         <p style="margin-bottom: 0.4rem;">⏰ <strong>Horaires :</strong> ${action.time}</p>
-        <p style="margin-bottom: 0.4rem;">📍 <strong>Lieu exact :</strong> ${action.address}, ${action.commune}</p>
-        <p style="margin-bottom: 0;">ℹ️ <strong>Prérequis :</strong> ${action.requirements}</p>
+        <p style="margin-bottom: 0.4rem;">📍 <strong>Lieu de rendez-vous :</strong> ${action.address}, ${action.commune}</p>
+        <p style="margin-bottom: 0.4rem;">🏁 <strong>Arrivée :</strong> Fin du parcours au Bois des Fontaines après un passage par les bords de Seine</p>
+        <p style="margin-bottom: 0.4rem;">ℹ️ <strong>Modalités :</strong> ${action.requirements}</p>
+        <p style="margin-bottom: 0;">✉️ <strong>Inscription directe :</strong> <a href="mailto:ensembleenparisis@gmail.com?subject=Inscription%20balade%20foret%2017%20octobre" style="color: var(--primary); font-weight: 600; text-decoration: underline;">ensembleenparisis@gmail.com</a> ou via le formulaire ci-dessous.</p>
       </div>
 
       <div style="display: flex; gap: 6px; flex-wrap: wrap;">
@@ -71,12 +92,71 @@ class ModalManager {
     const footer = modal.querySelector(".modal-footer");
     footer.innerHTML = `
       <button class="btn btn-outline" onclick="window.modals.closeAll()">Fermer</button>
+      <button class="btn btn-outline" onclick="window.modals.openImageLightbox('${action.image}', '${action.title.replace(/'/g, "\\'")}')">
+        🔍 Affiche officielle
+      </button>
       <button class="btn btn-primary" onclick="window.modals.openRegistration('${action.id}')">
-        Participer à cette action (${spotsLeft} places)
+        Participer (${spotsLeft} places restantes)
       </button>
     `;
 
     this.open("modal-action-details");
+  }
+
+  // --- 1.5 LIGHTBOX AFFICHE PLEIN ÉCRAN ---
+  openImageLightbox(src, title) {
+    let lightbox = document.getElementById("modal-image-lightbox");
+    if (!lightbox) {
+      lightbox = document.createElement("div");
+      lightbox.id = "modal-image-lightbox";
+      lightbox.className = "modal-backdrop lightbox-backdrop";
+      lightbox.setAttribute("role", "dialog");
+      lightbox.setAttribute("aria-modal", "true");
+      lightbox.innerHTML = `
+        <div class="lightbox-dialog">
+          <div class="lightbox-header">
+            <h3 class="lightbox-title">Affiche officielle</h3>
+            <button class="modal-close-btn" onclick="window.modals.closeAll()" aria-label="Fermer">✕</button>
+          </div>
+          <div class="lightbox-body">
+            <img class="lightbox-img" src="" alt="Affiche" />
+          </div>
+          <div class="lightbox-footer">
+            <a class="btn btn-outline btn-sm lightbox-download-link" href="" download target="_blank">📥 Télécharger</a>
+            <button class="btn btn-primary btn-sm lightbox-register-btn">Participer à l'événement</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(lightbox);
+    }
+
+    const titleEl = lightbox.querySelector(".lightbox-title");
+    if (titleEl) titleEl.textContent = title || "Affiche officielle";
+
+    const imgEl = lightbox.querySelector(".lightbox-img");
+    if (imgEl) {
+      imgEl.src = src;
+      imgEl.alt = title || "Affiche de l'événement";
+    }
+
+    const dlLink = lightbox.querySelector(".lightbox-download-link");
+    if (dlLink) {
+      dlLink.href = src;
+    }
+
+    const regBtn = lightbox.querySelector(".lightbox-register-btn");
+    if (regBtn) {
+      regBtn.onclick = () => {
+        window.modals.closeAll();
+        if (this.currentAction) {
+          window.modals.openRegistration(this.currentAction.id);
+        } else {
+          window.modals.openRegistration("act-foret-herblay");
+        }
+      };
+    }
+
+    this.open("modal-image-lightbox");
   }
 
   // --- 2. MODALE D'INSCRIPTION CITOYEN / BÉNÉVOLE ---
@@ -551,6 +631,7 @@ END:VCALENDAR`;
     if (!container) return;
 
     const q = (query || "").toLowerCase();
+    const adhesionMatch = !query || "adhesion adhérer bulletin cotisation membre rejoindre participation fiche".includes(q);
     const statutsMatch = !query || "statuts association loi 1901 objet herblay siege reglement charte bureau delage smat thieux".includes(q);
 
     const filtered = window.state.actions.filter(a => {
@@ -559,6 +640,18 @@ END:VCALENDAR`;
     }).slice(0, 5);
 
     let html = "";
+    if (adhesionMatch) {
+      html += `
+        <div class="search-result-item" onclick="window.modals.closeAll(); window.ui.openAdhesion();" style="border-left: 3px solid #7C3AED;">
+          <div>
+            <strong>✍️ Bulletin d'Adhésion (Fiche Officielle)</strong>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">🤝 Adhérer en ligne, cotisation solidaire, participation aux actions</div>
+          </div>
+          <span class="badge badge-adhesion">Adhésion</span>
+        </div>
+      `;
+    }
+
     if (statutsMatch) {
       html += `
         <div class="search-result-item" onclick="window.modals.closeAll(); window.ui.openStatuts();" style="border-left: 3px solid var(--primary);">
@@ -582,6 +675,64 @@ END:VCALENDAR`;
     `).join("");
 
     container.innerHTML = html;
+  }
+
+  // --- 7. MODALE CONFIRMATION ADHÉSION RÉUSSIE ---
+  openAdhesionSuccess(data) {
+    const modal = document.getElementById("modal-adhesion-success");
+    if (!modal) return;
+    const body = modal.querySelector(".modal-body");
+    const adhesionNum = "ADH-2026-" + Math.floor(1000 + Math.random() * 9000);
+    const reglementLabels = {
+      especes: "Espèces",
+      cheque: "Chèque",
+      enligne: "Hello Asso",
+      autre: data.reglement_autre ? `Autre (${data.reglement_autre})` : "Autre"
+    };
+
+    body.innerHTML = `
+      <div style="text-align: center; padding: 1.5rem 0.5rem;">
+        <div style="font-size: 3.25rem; margin-bottom: 0.75rem;">🎉</div>
+        <h4 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem;">
+          Bienvenue dans l'association Ensemble en Parisis !
+        </h4>
+        <p style="color: var(--text-muted); max-width: 480px; margin: 0 auto 1.5rem auto; font-size: 0.95rem;">
+          Votre demande d'adhésion pour <strong>${data.prenom || ''} ${data.nom || ''}</strong> a été enregistrée avec succès. Merci pour votre engagement citoyen !
+        </p>
+        
+        <div class="adhesion-card-badge-preview">
+          <div class="adhesion-preview-header">
+            <img src="photos/Ensemble_Logo%20violet.png" alt="Logo" style="height: 32px; object-fit: contain;" />
+            <span class="badge badge-adhesion">Membre Adhérent 2026</span>
+          </div>
+          <div class="adhesion-preview-body">
+            <div style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">${data.prenom || ''} ${data.nom || ''}</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">📍 ${data.adresse || ''} · ${data.codepostal || ''} ${data.ville || 'Herblay-sur-Seine'}</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">📧 ${data.email || ''} · 📞 ${data.telephone || ''}</div>
+            
+            <div style="margin-top: 0.85rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; border-top: 1px dashed var(--border-light); padding-top: 0.65rem; color: var(--text-main);">
+              <span>N° Réf : <strong>${adhesionNum}</strong></span>
+              <span>Cotisation : <strong>${data.cotisation || 15} €</strong> (${reglementLabels[data.adh_reglement] || 'Hello Asso'})</span>
+            </div>
+            ${data.propositions ? `
+            <div style="margin-top: 0.5rem; font-size: 0.82rem; color: #6D28D9; background: #FAF5FF; padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px dashed #DDD6FE; text-align: left;">
+              💡 <strong>Vos propositions :</strong> ${data.propositions}
+            </div>` : ''}
+          </div>
+        </div>
+
+        <div style="margin-top: 1.75rem; display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+          <button class="btn btn-primary" onclick="window.ui.printAdhesion(false); window.modals.closeAll();">
+            🖨️ Imprimer mon justificatif
+          </button>
+          <button class="btn btn-outline" onclick="window.modals.closeAll();">
+            Fermer
+          </button>
+        </div>
+      </div>
+    `;
+
+    this.open("modal-adhesion-success");
   }
 }
 

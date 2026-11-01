@@ -184,7 +184,7 @@ sequenceDiagram
 +-----------------------------------------------------------------------------------+
 |                                                                                   |
 |  SECTION 1: HERO SECTION                                                          |
-|  "Faites bouger votre territoire, à votre rythme."                                |
+|  "Échanger, Agir, Rapprocher. Participer à la vie du Parisis"                     |
 |  Rejoignez des centaines de citoyens et associations engagés en Parisis.          |
 |                                                                                   |
 |  +-----------------------------------------------------------------------------+  |
