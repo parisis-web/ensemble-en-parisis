@@ -62,6 +62,7 @@ graph TD
   * **Thématiques :** Accès direct aux 6 piliers thématiques.
   * **Associations :** Annuaire, Carte interactive des structures.
   * **Projets citoyens :** Idées, concertations en cours.
+  * **Contact :** Formulaire de contact direct en ligne vers `ensembleenparis@gmail.com` (sans ouverture d'application externe comme Outlook).
 * **Barre d'outils & CTA (Droite) :**
   * 🔍 *Recherche rapide (icône modale / Cmd+K)*
   * 👤 *Connexion / Mon Espace*

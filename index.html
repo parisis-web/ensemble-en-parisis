@@ -63,7 +63,7 @@
         </a>
         <a href="#themes-section" class="nav-link">Thématiques</a>
         <a href="javascript:void(0)" onclick="window.modals.openAssoDashboard()" class="nav-link">Espace Asso</a>
-        <a href="mailto:ensembleenparisis@gmail.com" class="nav-link nav-link-contact" id="nav-contact-link" title="Écrire à l'association Ensemble en Parisis (ensembleenparisis@gmail.com)">
+        <a href="javascript:void(0)" onclick="window.modals.openContact(event)" class="nav-link nav-link-contact" id="nav-contact-link" title="Écrire à l'association Ensemble en Parisis (ensembleenparis@gmail.com)">
           <span>Contact</span>
         </a>
       </nav>
@@ -749,7 +749,7 @@
             <a href="javascript:void(0)" onclick="window.modals.openProposeAction()" class="footer-link">Proposer une action</a>
             <a href="javascript:void(0)" onclick="window.modals.openAssoDashboard()" class="footer-link">Espace Association</a>
             <a href="javascript:void(0)" onclick="window.ui.showToast('Guide', 'Guide pratique du bénévole disponible en téléchargement', 'info')" class="footer-link">Guide de l'engagement</a>
-            <a href="mailto:ensembleenparisis@gmail.com" class="footer-link">Contact partenariats : ensembleenparisis@gmail.com</a>
+            <a href="javascript:void(0)" onclick="window.modals.openContact(event, 'Partenariats')" class="footer-link">Contact partenariats : ensembleenparis@gmail.com</a>
           </div>
         </div>
 
@@ -757,7 +757,7 @@
         <div>
           <h4 class="footer-col-title">Ensemble en Parisis</h4>
           <div class="footer-links">
-            <a href="mailto:ensembleenparisis@gmail.com" class="footer-link" style="font-weight: 700; color: var(--primary);">ensembleenparisis@gmail.com</a>
+            <a href="javascript:void(0)" onclick="window.modals.openContact(event)" class="footer-link" style="font-weight: 700; color: var(--primary);">ensembleenparis@gmail.com</a>
             <a href="#adhesion-section" onclick="window.ui.openAdhesion(event)" class="footer-link">Bulletin d'Adhésion</a>
             <a href="#statuts-section" onclick="window.ui.openStatuts(event)" class="footer-link">Statuts de l'Association</a>
             <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')" class="footer-link">Charte éthique</a>
@@ -770,7 +770,7 @@
           © 2026 Ensemble en Parisis · Association Loi 1901 à but non lucratif.
         </div>
         <div class="footer-bottom-links">
-          <a href="mailto:ensembleenparisis@gmail.com">Contact (ensembleenparisis@gmail.com)</a>
+          <a href="javascript:void(0)" onclick="window.modals.openContact(event)">Contact (ensembleenparis@gmail.com)</a>
           <a href="#adhesion-section" onclick="window.ui.openAdhesion(event)">Bulletin d'adhésion</a>
           <a href="#statuts-section" onclick="window.ui.openStatuts(event)">Statuts officiels</a>
           <a href="javascript:void(0)" onclick="window.modals.open('modal-legal')">Plan du site</a>
@@ -935,6 +935,20 @@
         <a class="btn btn-outline btn-sm lightbox-download-link" href="photos/evenement-foret-herblaysienne-17-octobre.jpg" download="affiche-foret-herblaysienne-17-octobre.jpg" target="_blank">📥 Télécharger l'affiche</a>
         <button class="btn btn-primary btn-sm lightbox-register-btn" onclick="window.modals.closeAll(); window.modals.openRegistration('act-foret-herblay');">Participer à la balade</button>
       </div>
+    </div>
+  </div>
+
+  <!-- 10. MODALE CONTACT : ÉCRIRE UN MESSAGE SANS OUTLOOK -->
+  <div id="modal-contact" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-contact-title">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 class="modal-title" id="modal-contact-title">✉️ Écrire à l'association</h3>
+          <span class="modal-subtitle">Ensemble en Parisis · ensembleenparis@gmail.com</span>
+        </div>
+        <button class="modal-close-btn" onclick="window.modals.closeAll()" aria-label="Fermer la fenêtre de contact">✕</button>
+      </div>
+      <div class="modal-body" id="modal-contact-body"></div>
     </div>
   </div>
 

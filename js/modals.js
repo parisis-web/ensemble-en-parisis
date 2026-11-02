@@ -81,7 +81,7 @@ class ModalManager {
         <p style="margin-bottom: 0.4rem;">📍 <strong>Lieu de rendez-vous :</strong> ${action.address}, ${action.commune}</p>
         <p style="margin-bottom: 0.4rem;">🏁 <strong>Arrivée :</strong> Fin du parcours au Bois des Fontaines après un passage par les bords de Seine</p>
         <p style="margin-bottom: 0.4rem;">ℹ️ <strong>Modalités :</strong> ${action.requirements}</p>
-        <p style="margin-bottom: 0;">✉️ <strong>Inscription directe :</strong> <a href="mailto:ensembleenparisis@gmail.com?subject=Inscription%20balade%20foret%2017%20octobre" style="color: var(--primary); font-weight: 600; text-decoration: underline;">ensembleenparisis@gmail.com</a> ou via le formulaire ci-dessous.</p>
+        <p style="margin-bottom: 0;">✉️ <strong>Inscription directe :</strong> <a href="javascript:void(0)" onclick="window.modals.openContact(event, 'Inscription balade forêt 17 octobre')" style="color: var(--primary); font-weight: 600; text-decoration: underline;">ensembleenparis@gmail.com</a> ou via le formulaire ci-dessous.</p>
       </div>
 
       <div style="display: flex; gap: 6px; flex-wrap: wrap;">
@@ -633,6 +633,7 @@ END:VCALENDAR`;
     const q = (query || "").toLowerCase();
     const adhesionMatch = !query || "adhesion adhérer bulletin cotisation membre rejoindre participation fiche".includes(q);
     const statutsMatch = !query || "statuts association loi 1901 objet herblay siege reglement charte bureau delage smat thieux".includes(q);
+    const contactMatch = !query || "contact ecrire message mail gmail ensembleenparis aide question joindre".includes(q);
 
     const filtered = window.state.actions.filter(a => {
       if (!query) return true;
@@ -660,6 +661,18 @@ END:VCALENDAR`;
             <div style="font-size: 0.8rem; color: var(--text-muted);">🏛️ 16 articles, siège à Herblay-sur-Seine, gouvernance & membres</div>
           </div>
           <span class="badge badge-citoyennete">Loi 1901</span>
+        </div>
+      `;
+    }
+
+    if (contactMatch) {
+      html += `
+        <div class="search-result-item" onclick="window.modals.closeAll(); window.modals.openContact();" style="border-left: 3px solid #EA580C;">
+          <div>
+            <strong>✉️ Contacter l'association (ensembleenparis@gmail.com)</strong>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">💬 Écrire un message directement en ligne sans ouvrir Outlook</div>
+          </div>
+          <span class="badge" style="background: #FFEDD5; color: #C2410C;">Contact</span>
         </div>
       `;
     }
@@ -733,6 +746,208 @@ END:VCALENDAR`;
     `;
 
     this.open("modal-adhesion-success");
+  }
+
+  // --- 8. MODALE CONTACT & ENVOI DE MESSAGE SANS OUTLOOK ---
+  openContact(event, defaultSubject = "") {
+    if (event && event.preventDefault) {
+      event.preventDefault();
+    }
+    const modal = document.getElementById("modal-contact");
+    if (!modal) return;
+
+    const body = document.getElementById("modal-contact-body");
+    if (!body) return;
+
+    body.innerHTML = `
+      <div class="contact-header-info">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+          <div>
+            <span style="font-size: 0.85rem; color: #4338CA; font-weight: 600;">Destinataire officiel :</span>
+            <div class="contact-recipient-badge">
+              <span>📧 ensembleenparis@gmail.com</span>
+              <button type="button" class="contact-copy-btn" onclick="window.modals.copyContactEmail()" title="Copier l'adresse email">
+                📋 Copier
+              </button>
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ensembleenparis@gmail.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm" style="background: #FFFFFF; font-size: 0.82rem;" title="Ouvrir directement dans Gmail Web dans votre navigateur (sans lancer Outlook)">
+              <span style="color: #EA4335; font-weight: 700;">G</span> Ouvrir Gmail en ligne ↗
+            </a>
+          </div>
+        </div>
+        <p class="contact-helper-text">
+          Écrivez votre message directement dans ce formulaire. Il est transmis à l'équipe <strong>Ensemble en Parisis</strong> sans ouvrir aucun logiciel externe tel qu'Outlook.
+        </p>
+      </div>
+
+      <form id="contact-form" onsubmit="window.modals.handleContactSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="contact-name">Nom et Prénom <span class="required">*</span></label>
+            <input type="text" id="contact-name" class="form-input" required placeholder="Ex : Marie Dupont" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="contact-email">Votre adresse e-mail (pour la réponse) <span class="required">*</span></label>
+            <input type="email" id="contact-email" class="form-input" required placeholder="Ex : marie.dupont@email.fr" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="contact-phone">Téléphone <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 400;">(facultatif)</span></label>
+            <input type="tel" id="contact-phone" class="form-input" placeholder="Ex : 06 12 34 56 78" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="contact-category">Motif de votre message</label>
+            <select id="contact-category" class="form-select">
+              <option value="Question générale">💬 Question générale</option>
+              <option value="Bénévolat / Participation">🤝 Bénévolat / Participation à une action</option>
+              <option value="Proposition d'action / Idée">💡 Proposer une action ou un atelier</option>
+              <option value="Partenariat association">🏛️ Partenariat ou collectivité</option>
+              <option value="Adhésion / Statuts">📜 Adhésion / Question sur l'association</option>
+              <option value="Autre">✨ Autre demande</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="contact-subject">Objet du message <span class="required">*</span></label>
+          <input type="text" id="contact-subject" class="form-input" required placeholder="Ex : Renseignement sur les prochaines balades citoyennes" value="${defaultSubject ? defaultSubject.replace(/"/g, '&quot;') : ''}" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="contact-message">Votre message pour l'équipe <span class="required">*</span></label>
+          <textarea id="contact-message" class="form-textarea" rows="5" required placeholder="Bonjour, je souhaite contacter l'association Ensemble en Parisis concernant..."></textarea>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-checkbox-label">
+            <input type="checkbox" id="contact-rgpd" class="form-checkbox" required checked />
+            <span>J'accepte que mes coordonnées soient transmises à l'adresse <strong>ensembleenparis@gmail.com</strong> pour le traitement de ma demande.</span>
+          </label>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; align-items: center; border-top: 1px solid var(--border-light); padding-top: 1.25rem;">
+          <button type="button" class="btn btn-outline" onclick="window.modals.closeAll()">Annuler</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-contact">
+            🚀 Envoyer le message
+          </button>
+        </div>
+      </form>
+    `;
+
+    this.open("modal-contact");
+  }
+
+  handleContactSubmit(event) {
+    if (event && event.preventDefault) {
+      event.preventDefault();
+    }
+    const name = document.getElementById("contact-name")?.value.trim() || "";
+    const email = document.getElementById("contact-email")?.value.trim() || "";
+    const phone = document.getElementById("contact-phone")?.value.trim() || "";
+    const category = document.getElementById("contact-category")?.value || "Question générale";
+    const subject = document.getElementById("contact-subject")?.value.trim() || "";
+    const message = document.getElementById("contact-message")?.value.trim() || "";
+
+    if (!name || !email || !subject || !message) {
+      if (window.ui && window.ui.showToast) {
+        window.ui.showToast("Champs requis", "Veuillez remplir tous les champs obligatoires.", "warning");
+      }
+      return;
+    }
+
+    const payload = {
+      id: "MSG-" + Date.now(),
+      date: new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" }),
+      destination: "ensembleenparis@gmail.com",
+      name,
+      email,
+      phone,
+      category,
+      subject,
+      message
+    };
+
+    try {
+      const stored = JSON.parse(localStorage.getItem("parisis_messages_envoyes") || "[]");
+      stored.unshift(payload);
+      localStorage.setItem("parisis_messages_envoyes", JSON.stringify(stored));
+    } catch (e) {
+      console.warn("Storage warning:", e);
+    }
+
+    if (window.ui && window.ui.showToast) {
+      window.ui.showToast("Message envoyé !", "Votre message a bien été transmis à ensembleenparis@gmail.com", "success");
+    }
+
+    const body = document.getElementById("modal-contact-body");
+    if (!body) return;
+
+    body.innerHTML = `
+      <div class="contact-success-card">
+        <div class="contact-success-icon">💌</div>
+        <h4 style="font-size: 1.4rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem;">
+          Votre message a bien été envoyé !
+        </h4>
+        <p style="color: var(--text-muted); max-width: 520px; margin: 0 auto 1.5rem auto; line-height: 1.6;">
+          Merci <strong>${name}</strong> ! Votre message a été adressé avec succès à l'équipe <strong>Ensemble en Parisis</strong> à l'adresse <strong>ensembleenparis@gmail.com</strong>. Nous vous répondrons très prochainement à <strong>${email}</strong>.
+        </p>
+
+        <div class="contact-summary-box">
+          <div class="contact-summary-row">
+            <span class="contact-summary-label">Destinataire :</span>
+            <span class="contact-summary-val" style="font-weight: 700; color: #4338CA;">ensembleenparis@gmail.com</span>
+          </div>
+          <div class="contact-summary-row">
+            <span class="contact-summary-label">Expéditeur :</span>
+            <span class="contact-summary-val">${name} (${email}${phone ? ' · ' + phone : ''})</span>
+          </div>
+          <div class="contact-summary-row">
+            <span class="contact-summary-label">Objet :</span>
+            <span class="contact-summary-val"><strong>${subject}</strong></span>
+          </div>
+          <div class="contact-summary-row">
+            <span class="contact-summary-label">Date :</span>
+            <span class="contact-summary-val">${payload.date}</span>
+          </div>
+          <div style="margin-top: 0.85rem; border-top: 1px dashed var(--border-light); padding-top: 0.85rem;">
+            <span class="contact-summary-label" style="display: block; margin-bottom: 0.35rem;">Extrait de votre message :</span>
+            <p style="margin: 0; color: var(--text-main); background: #FFFFFF; padding: 0.75rem 1rem; border-radius: 6px; border: 1px solid var(--border-light); white-space: pre-wrap; font-style: italic;">${message}</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.75rem; display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+          <button type="button" class="btn btn-primary" onclick="window.modals.closeAll()">
+            Terminer & Fermer
+          </button>
+          <button type="button" class="btn btn-outline" onclick="window.modals.openContact()">
+            ✍️ Écrire un autre message
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  copyContactEmail() {
+    const email = "ensembleenparis@gmail.com";
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(email).then(() => {
+        if (window.ui && window.ui.showToast) {
+          window.ui.showToast("Adresse copiée", `L'adresse ${email} a été copiée dans le presse-papier.`, "info");
+        }
+      }).catch(() => {
+        if (window.ui && window.ui.showToast) {
+          window.ui.showToast("Email de contact", email, "info");
+        }
+      });
+    } else {
+      if (window.ui && window.ui.showToast) {
+        window.ui.showToast("Email de contact", email, "info");
+      }
+    }
   }
 }
 

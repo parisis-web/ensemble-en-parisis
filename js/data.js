@@ -265,7 +265,7 @@ const INITIAL_ACTIONS = [
     isFeatured: true,
     image: "photos/evenement-foret-herblaysienne-17-octobre.jpg",
     description: "Comment concilier ville et nature ? Venez participer à cette balade citoyenne et conviviale de 4 km guidée par Hugues Verdière, Forestier herblaysien. Au programme : Histoire de la forêt de Maubuisson, pourquoi plante-t-on des arbres, et les enjeux de l'île d'Herblay. Fin du parcours au Bois des Fontaines après un passage par les bords de Seine. Événement gratuit organisé par Ensemble en Parisis (25 places max).",
-    requirements: "Événement gratuit sur inscription obligatoire (ensembleenparisis@gmail.com). Durée : 2h | Distance : 4km | 25 personnes max. Une voiture sera disponible au Passeur pour les personnes ne désirant pas faire la montée. ⚠️ Balade non conseillée pour les personnes à mobilité réduite.",
+    requirements: "Événement gratuit sur inscription obligatoire (ensembleenparis@gmail.com). Durée : 2h | Distance : 4km | 25 personnes max. Une voiture sera disponible au Passeur pour les personnes ne désirant pas faire la montée. ⚠️ Balade non conseillée pour les personnes à mobilité réduite.",
     accessibility: ["Événement gratuit", "Balade nature (4km)", "Familles & Citoyens", "Voiture relais au Passeur"],
     coords: [48.9875, 2.1570],
     tags: ["#ForêtHerblaysienne", "#VieLocale", "#NatureEnVille", "#HuguesVerdière", "#Herblay", "#Maubuisson"]
