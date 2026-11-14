@@ -36,7 +36,7 @@ class AppState {
       const stored = localStorage.getItem(this.STORAGE_KEY_ACTIONS);
       if (stored) {
         const parsed = JSON.parse(stored);
-        const customOnly = parsed.filter(p => !INITIAL_ACTIONS.some(init => init.id === p.id));
+        const customOnly = parsed.filter(p => !INITIAL_ACTIONS.some(init => init.id === p.id) && p.id !== "act-2" && p.id !== "act-3" && p.id !== "act-4" && p.id !== "act-5" && p.id !== "act-6" && p.id !== "act-9");
         return [...INITIAL_ACTIONS, ...customOnly];
       }
     } catch (e) {
@@ -67,7 +67,13 @@ class AppState {
   loadUser() {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY_USER);
-      if (stored) return JSON.parse(stored);
+      if (stored) {
+        const u = JSON.parse(stored);
+        if (u.registeredActions) {
+          u.registeredActions = u.registeredActions.filter(id => id !== "act-2" && id !== "act-3" && id !== "act-4" && id !== "act-5" && id !== "act-6" && id !== "act-9");
+        }
+        return u;
+      }
     } catch (e) {
       console.warn("Erreur profil utilisateur", e);
     }
@@ -77,7 +83,7 @@ class AppState {
       phone: "06 12 34 56 78",
       hoursContributed: 14,
       missionsCompleted: 4,
-      registeredActions: ["act-1", "act-4"],
+      registeredActions: ["act-1"],
       badges: CITIZEN_BADGES
     };
   }
@@ -109,11 +115,11 @@ class AppState {
   loadFavorites() {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY_FAVORITES);
-      if (stored) return JSON.parse(stored);
+      if (stored) return JSON.parse(stored).filter(id => id !== "act-2" && id !== "act-3" && id !== "act-4" && id !== "act-5" && id !== "act-6" && id !== "act-9");
     } catch (e) {
       console.warn("Erreur favoris", e);
     }
-    return ["act-2"];
+    return ["act-1"];
   }
 
   toggleFavorite(actionId) {
