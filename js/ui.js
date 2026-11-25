@@ -109,7 +109,7 @@ class UIManager {
               </span>
               <div style="display: flex; gap: 6px; align-items: center;">
                 ${isPoster ? `
-                  <button class="action-poster-badge" onclick="event.stopPropagation(); window.modals.openImageLightbox('${action.image}', '${action.title.replace(/'/g, "\\'")}')" title="Agrandir l'affiche officielle">
+                  <button class="action-poster-badge" onclick="event.stopPropagation(); window.modals.openImageLightbox('${action.image}', '${action.title.replace(/'/g, "\\'")}', '${action.id}')" title="Agrandir l'affiche officielle">
                     🔍 Affiche
                   </button>
                 ` : ""}
@@ -162,7 +162,7 @@ class UIManager {
                 Détails
               </button>
               ${isPoster ? `
-                <button class="btn btn-outline btn-sm" onclick="window.modals.openImageLightbox('${action.image}', '${action.title.replace(/'/g, "\\'")}')" title="Voir l'affiche en plein écran">
+                <button class="btn btn-outline btn-sm" onclick="window.modals.openImageLightbox('${action.image}', '${action.title.replace(/'/g, "\\'")}', '${action.id}')" title="Voir l'affiche en plein écran">
                   🖼️ Affiche
                 </button>
               ` : ""}

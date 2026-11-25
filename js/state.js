@@ -7,6 +7,7 @@ class AppState {
     this.STORAGE_KEY_ACTIONS = "ensemble_parisis_actions";
     this.STORAGE_KEY_USER = "ensemble_parisis_user";
     this.STORAGE_KEY_FAVORITES = "ensemble_parisis_favorites";
+    this.REMOVED_ACTION_IDS = new Set(["act-2", "act-3", "act-4", "act-5", "act-6", "act-7", "act-9"]);
 
     // Initialisation des données locales
     this.actions = this.loadActions();
@@ -36,7 +37,7 @@ class AppState {
       const stored = localStorage.getItem(this.STORAGE_KEY_ACTIONS);
       if (stored) {
         const parsed = JSON.parse(stored);
-        const customOnly = parsed.filter(p => !INITIAL_ACTIONS.some(init => init.id === p.id) && p.id !== "act-2" && p.id !== "act-3" && p.id !== "act-4" && p.id !== "act-5" && p.id !== "act-6" && p.id !== "act-9");
+        const customOnly = parsed.filter(p => !INITIAL_ACTIONS.some(init => init.id === p.id) && !this.REMOVED_ACTION_IDS.has(p.id));
         return [...INITIAL_ACTIONS, ...customOnly];
       }
     } catch (e) {
@@ -70,7 +71,7 @@ class AppState {
       if (stored) {
         const u = JSON.parse(stored);
         if (u.registeredActions) {
-          u.registeredActions = u.registeredActions.filter(id => id !== "act-2" && id !== "act-3" && id !== "act-4" && id !== "act-5" && id !== "act-6" && id !== "act-9");
+          u.registeredActions = u.registeredActions.filter(id => !this.REMOVED_ACTION_IDS.has(id));
         }
         return u;
       }
@@ -115,7 +116,7 @@ class AppState {
   loadFavorites() {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY_FAVORITES);
-      if (stored) return JSON.parse(stored).filter(id => id !== "act-2" && id !== "act-3" && id !== "act-4" && id !== "act-5" && id !== "act-6" && id !== "act-9");
+      if (stored) return JSON.parse(stored).filter(id => !this.REMOVED_ACTION_IDS.has(id));
     } catch (e) {
       console.warn("Erreur favoris", e);
     }

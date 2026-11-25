@@ -74,14 +74,28 @@ class ModalManager {
         </div>
       ` : ""}
 
+      ${action.id === "act-dechets-nucleaires" ? `
+        <div style="background: #F5F3FF; border: 1px solid #DDD6FE; padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+          <h4 style="font-size: 1rem; color: #4C1D95; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px;">
+            <span>⚛️</span> Au programme de la conférence-échange
+          </h4>
+          <ul style="margin: 0; padding-left: 1.25rem; color: #3B0764; font-size: 0.92rem; line-height: 1.6;">
+            <li><strong>Présentation du Projet CIGÉO :</strong> le stockage en profondeur des déchets radioactifs de Haute Activité (à Bure dans la Meuse).</li>
+            <li><strong>Intervenant :</strong> Nasser SMATI, Docteur en Mécanique énergétique option Génie nucléaire.</li>
+            <li><strong>Échanges citoyens :</strong> un temps de questions-réponses convivial et accessible à tous.</li>
+            <li><strong>Entrée gratuite :</strong> sous réserve d'une consommation sur place (au Döner's).</li>
+          </ul>
+        </div>
+      ` : ""}
+
       <div style="background: var(--bg-subtle); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
         <h4 style="font-size: 1rem; margin-bottom: 0.75rem;">Informations pratiques & Accès</h4>
         <p style="margin-bottom: 0.4rem;">📅 <strong>Date :</strong> ${action.date}</p>
         <p style="margin-bottom: 0.4rem;">⏰ <strong>Horaires :</strong> ${action.time}</p>
         <p style="margin-bottom: 0.4rem;">📍 <strong>Lieu de rendez-vous :</strong> ${action.address}, ${action.commune}</p>
-        <p style="margin-bottom: 0.4rem;">🏁 <strong>Arrivée :</strong> Fin du parcours au Bois des Fontaines après un passage par les bords de Seine</p>
+        ${action.id === "act-foret-herblay" ? `<p style="margin-bottom: 0.4rem;">🏁 <strong>Arrivée :</strong> Fin du parcours au Bois des Fontaines après un passage par les bords de Seine</p>` : ""}
         <p style="margin-bottom: 0.4rem;">ℹ️ <strong>Modalités :</strong> ${action.requirements}</p>
-        <p style="margin-bottom: 0;">✉️ <strong>Inscription directe :</strong> <a href="javascript:void(0)" onclick="window.modals.openContact(event, 'Inscription balade forêt 17 octobre')" style="color: var(--primary); font-weight: 600; text-decoration: underline;">ensembleenparis@gmail.com</a> ou via le formulaire ci-dessous.</p>
+        <p style="margin-bottom: 0;">✉️ <strong>Inscription directe :</strong> <a href="javascript:void(0)" onclick="window.modals.openContact(event, 'Inscription - ${action.title.replace(/'/g, "\\'")}')" style="color: var(--primary); font-weight: 600; text-decoration: underline;">${action.id === "act-dechets-nucleaires" ? "ensembleenparisis@gmail.com" : "ensembleenparis@gmail.com"}</a> ou via le formulaire ci-dessous.</p>
       </div>
 
       <div style="display: flex; gap: 6px; flex-wrap: wrap;">
@@ -92,7 +106,7 @@ class ModalManager {
     const footer = modal.querySelector(".modal-footer");
     footer.innerHTML = `
       <button class="btn btn-outline" onclick="window.modals.closeAll()">Fermer</button>
-      <button class="btn btn-outline" onclick="window.modals.openImageLightbox('${action.image}', '${action.title.replace(/'/g, "\\'")}')">
+      <button class="btn btn-outline" onclick="window.modals.openImageLightbox('${action.image}', '${action.title.replace(/'/g, "\\'")}', '${action.id}')">
         🔍 Affiche officielle
       </button>
       <button class="btn btn-primary" onclick="window.modals.openRegistration('${action.id}')">
@@ -104,7 +118,11 @@ class ModalManager {
   }
 
   // --- 1.5 LIGHTBOX AFFICHE PLEIN ÉCRAN ---
-  openImageLightbox(src, title) {
+  openImageLightbox(src, title, actionId = null) {
+    if (actionId) {
+      const targetAction = window.state.actions.find(a => a.id === actionId);
+      if (targetAction) this.currentAction = targetAction;
+    }
     let lightbox = document.getElementById("modal-image-lightbox");
     if (!lightbox) {
       lightbox = document.createElement("div");
